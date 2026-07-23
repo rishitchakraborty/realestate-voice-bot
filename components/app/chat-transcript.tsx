@@ -28,7 +28,7 @@ const CONTAINER_MOTION_PROPS = {
   initial: 'hidden',
   animate: 'visible',
   exit: 'hidden',
-};
+} satisfies HTMLMotionProps<"div">;
 
 interface ChatTranscriptProps {
   hidden?: boolean;

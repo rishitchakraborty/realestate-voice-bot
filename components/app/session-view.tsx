@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
 import { useSessionContext, useSessionMessages } from '@livekit/components-react';
 import type { AppConfig } from '@/app-config';
 import {
@@ -36,7 +36,7 @@ const BOTTOM_VIEW_MOTION_PROPS = {
     delay: 0.5,
     ease: 'easeOut',
   },
-};
+}satisfies HTMLMotionProps<"div">;
 
 const SHIMMER_MOTION_PROPS = {
   variants: {
@@ -60,7 +60,7 @@ const SHIMMER_MOTION_PROPS = {
   initial: 'hidden',
   animate: 'visible',
   exit: 'hidden',
-};
+}satisfies HTMLMotionProps<"div">;
 
 interface FadeProps {
   top?: boolean;
