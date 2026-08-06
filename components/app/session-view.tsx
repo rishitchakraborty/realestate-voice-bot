@@ -1,19 +1,25 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
-import { useSessionContext, useSessionMessages } from '@livekit/components-react';
-import type { AppConfig } from '@/app-config';
+import React, { useEffect, useRef, useState } from "react";
+import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
+import { ConnectionState, RoomEvent } from "livekit-client";
+import {
+  useRoomContext,
+  useSessionContext,
+  useSessionMessages,
+} from "@livekit/components-react";
+import type { AppConfig } from "@/app-config";
+import type { UserFormData } from "@/components/app/welcome-view";
 import {
   AgentControlBar,
   type AgentControlBarControls,
-} from '@/components/agents-ui/agent-control-bar';
-import { ChatTranscript } from '@/components/app/chat-transcript';
-import { TileLayout } from '@/components/app/tile-layout';
-import { cn } from '@/lib/shadcn/utils';
-import { Shimmer } from '../ai-elements/shimmer';
+} from "@/components/agents-ui/agent-control-bar";
+import { ChatTranscript } from "@/components/app/chat-transcript";
+import { TileLayout } from "@/components/app/tile-layout";
+import { cn } from "@/lib/shadcn/utils";
+import { Shimmer } from "../ai-elements/shimmer";
 
-const MotionBottom = motion.create('div');
+const MotionBottom = motion.create("div");
 
 const MotionMessage = motion.create(Shimmer);
 
@@ -21,29 +27,29 @@ const BOTTOM_VIEW_MOTION_PROPS = {
   variants: {
     visible: {
       opacity: 1,
-      translateY: '0%',
+      translateY: "0%",
     },
     hidden: {
       opacity: 0,
-      translateY: '100%',
+      translateY: "100%",
     },
   },
-  initial: 'hidden',
-  animate: 'visible',
-  exit: 'hidden',
+  initial: "hidden",
+  animate: "visible",
+  exit: "hidden",
   transition: {
     duration: 0.3,
     delay: 0.5,
-    ease: 'easeOut',
+    ease: "easeOut",
   },
-}satisfies HTMLMotionProps<"div">;
+} satisfies HTMLMotionProps<"div">;
 
 const SHIMMER_MOTION_PROPS = {
   variants: {
     visible: {
       opacity: 1,
       transition: {
-        ease: 'easeIn',
+        ease: "easeIn",
         duration: 0.5,
         delay: 0.8,
       },
@@ -51,16 +57,16 @@ const SHIMMER_MOTION_PROPS = {
     hidden: {
       opacity: 0,
       transition: {
-        ease: 'easeIn',
+        ease: "easeIn",
         duration: 0.5,
         delay: 0,
       },
     },
   },
-  initial: 'hidden',
-  animate: 'visible',
-  exit: 'hidden',
-}satisfies HTMLMotionProps<"div">;
+  initial: "hidden",
+  animate: "visible",
+  exit: "hidden",
+} satisfies HTMLMotionProps<"div">;
 
 interface FadeProps {
   top?: boolean;
@@ -72,24 +78,26 @@ export function Fade({ top = false, bottom = false, className }: FadeProps) {
   return (
     <div
       className={cn(
-        'from-background pointer-events-none h-4 bg-linear-to-b to-transparent',
-        top && 'bg-linear-to-b',
-        bottom && 'bg-linear-to-t',
-        className
+        "from-background pointer-events-none h-4 bg-linear-to-b to-transparent",
+        top && "bg-linear-to-b",
+        bottom && "bg-linear-to-t",
+        className,
       )}
     />
   );
 }
-
 interface SessionViewProps {
   appConfig: AppConfig;
+  formData: UserFormData;
 }
 
 export const SessionView = ({
   appConfig,
+  formData,
   ...props
-}: React.ComponentProps<'section'> & SessionViewProps) => {
+}: React.ComponentProps<"section"> & SessionViewProps) => {
   const session = useSessionContext();
+  const room = useRoomContext();
   const { messages } = useSessionMessages(session);
   const [chatOpen, setChatOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -103,6 +111,73 @@ export const SessionView = ({
   };
 
   useEffect(() => {
+    if (!room) return;
+
+    let isMounted = true;
+    let hasPublished = false;
+
+    const sendBirthDetails = async () => {
+      if (hasPublished || !isMounted) return;
+      if (room.state !== ConnectionState.Connected) return;
+
+      // LiveKit discards data packets if no remote participant is in room.
+      // Wait until the Python agent (remote participant) has joined.
+      if (room.remoteParticipants.size === 0) {
+        console.log(
+          "Waiting for agent to join room before sending birth_details...",
+        );
+        return;
+      }
+
+      try {
+        const payload = {
+          type: "birth_details",
+          topic: "birth_details",
+          name: formData.name,
+          date_of_birth: formData.dateOfBirth,
+          time_of_birth: formData.timeOfBirth,
+          place_of_birth: formData.placeOfBirth,
+          language: formData.language,
+        };
+
+        const data = new TextEncoder().encode(JSON.stringify(payload));
+
+        await room.localParticipant.publishData(data, {
+          reliable: true,
+          topic: "birth_details",
+        });
+
+        hasPublished = true;
+        console.log("Successfully published birth_details to agent:", payload);
+      } catch (err) {
+        console.error("Error publishing birth_details to agent:", err);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      if (hasPublished || !isMounted) {
+        clearInterval(intervalId);
+        return;
+      }
+      sendBirthDetails();
+    }, 1000);
+
+    const handleParticipantConnected = () => {
+      console.log("Participant connected, sending birth_details...");
+      sendBirthDetails();
+    };
+
+    room.on(RoomEvent.ParticipantConnected, handleParticipantConnected);
+    sendBirthDetails();
+
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+      room.off(RoomEvent.ParticipantConnected, handleParticipantConnected);
+    };
+  }, [room]);
+
+  useEffect(() => {
     const lastMessage = messages.at(-1);
     const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
 
@@ -112,7 +187,10 @@ export const SessionView = ({
   }, [messages]);
 
   return (
-    <section className="bg-background relative z-10 h-svh w-svw overflow-hidden" {...props}>
+    <section
+      className="bg-background relative z-10 h-svh w-svw overflow-hidden"
+      {...props}
+    >
       <Fade top className="absolute inset-x-4 top-0 z-10 h-40" />
       {/* transcript */}
       <ChatTranscript
@@ -144,7 +222,10 @@ export const SessionView = ({
           </AnimatePresence>
         )}
         <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
-          <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" />
+          <Fade
+            bottom
+            className="absolute inset-x-0 top-0 h-4 -translate-y-full"
+          />
           <AgentControlBar
             variant="livekit"
             controls={controls}

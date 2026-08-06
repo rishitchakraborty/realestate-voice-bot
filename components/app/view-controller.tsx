@@ -1,10 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useSessionContext } from '@livekit/components-react';
 import type { AppConfig } from '@/app-config';
 import { SessionView } from '@/components/app/session-view';
-import { WelcomeView } from '@/components/app/welcome-view';
+import { WelcomeView, type UserFormData } from '@/components/app/welcome-view';
 
 const MotionWelcomeView = motion.create(WelcomeView);
 const MotionSessionView = motion.create(SessionView);
@@ -33,6 +34,18 @@ interface ViewControllerProps {
 
 export function ViewController({ appConfig }: ViewControllerProps) {
   const { isConnected, start } = useSessionContext();
+  const [formData, setFormData] = useState<UserFormData>({
+    name: '',
+    dateOfBirth: '',
+    timeOfBirth: '',
+    placeOfBirth: '',
+    language: '',
+  });
+
+  const handleStartCall = (data: UserFormData) => {
+    setFormData(data);
+    start();
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -42,12 +55,17 @@ export function ViewController({ appConfig }: ViewControllerProps) {
           key="welcome"
           {...VIEW_MOTION_PROPS}
           startButtonText={appConfig.startButtonText}
-          onStartCall={start}
+          onStartCall={handleStartCall}
         />
       )}
       {/* Session view */}
       {isConnected && (
-        <MotionSessionView key="session-view" {...VIEW_MOTION_PROPS} appConfig={appConfig} />
+        <MotionSessionView
+          key="session-view"
+          {...VIEW_MOTION_PROPS}
+          appConfig={appConfig}
+          formData={formData}
+        />
       )}
     </AnimatePresence>
   );
