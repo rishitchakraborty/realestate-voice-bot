@@ -85,7 +85,18 @@ export function AgentChatTranscript({
                       </p>
                     </div>
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5">
-                      <User className="h-4 w-4" />
+                      {/* <User className="h-4 w-4" /> */}
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5 overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src="/realestate-bot/customer.png"
+                          alt="agent"
+                          className="h-full w-full object-cover rounded-full"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/agent.png";
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -95,14 +106,16 @@ export function AgentChatTranscript({
                     Agent
                   </span>
                   <div className="flex items-start gap-2.5">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5">
-                      {/* <div className="h-6 w-6"> */}
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src="/realestate-bot/agent.png"
                         alt="agent"
-                        className="h-36 w-36 text-slate-700 drop-shadow-xs"
+                        className="h-full w-full object-cover rounded-full"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "/agent.png";
+                        }}
                       />
-                      {/* </div> */}
                     </div>
                     <div className="rounded-2xl rounded-tl-xs bg-white px-4 py-3 text-slate-800 shadow-2xs border border-slate-200/80">
                       <p className="text-xs md:text-sm leading-relaxed text-slate-800">

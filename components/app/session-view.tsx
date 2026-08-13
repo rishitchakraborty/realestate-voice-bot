@@ -62,14 +62,15 @@ export const SessionView = ({
             {/* Agent Avatar Concentric Circular Ring (matching screenshot) */}
             <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
               <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
-                {/* <Bot className="h-12 w-12 text-slate-700 drop-shadow-xs" /> */}
-                <div className="flex h-full w-full flex-col items-center justify-center">
-                  <img
-                    src="/realestate-bot/agent.png"
-                    alt="agent"
-                    className="h-36 w-36 text-slate-700 drop-shadow-xs"
-                  />
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/realestate-bot/agent.png"
+                  alt="Agent Avatar"
+                  className="h-full w-full object-cover rounded-full"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/agent.png";
+                  }}
+                />
               </div>
 
               {/* Speaking pulse ring */}
@@ -126,7 +127,16 @@ export const SessionView = ({
             {/* Customer Avatar Circular Ring (matching screenshot) */}
             <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
               <div className="relative flex h-full w-full items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
-                <User className="h-14 w-14 text-slate-700 drop-shadow-xs" />
+                {/* <User className="h-14 w-14 text-slate-700 drop-shadow-xs" /> */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/realestate-bot/customer.png"
+                  alt="Agent Avatar"
+                  className="h-full w-full object-cover rounded-full"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/agent.png";
+                  }}
+                />
               </div>
             </div>
 
