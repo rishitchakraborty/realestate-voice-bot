@@ -18,22 +18,13 @@ export function CustomerLatestSpeech({ className, fallbackText }: CustomerLatest
   return (
     <div
       className={cn(
-        'relative flex w-full min-h-[125px] flex-col justify-between rounded-xl border-r-4 border-r-slate-700 border border-slate-200 bg-slate-50/90 p-4 text-right shadow-xs transition-all duration-300',
-        hasSpoken && 'border-r-indigo-600 border-indigo-200 bg-indigo-50/60 shadow-sm ring-2 ring-indigo-500/20',
+        'relative flex w-full min-h-[100px] flex-col justify-center items-center rounded-2xl border border-slate-200/80 bg-[#f1f5f9] p-4 text-center shadow-2xs transition-all duration-300',
+        hasSpoken && 'ring-2 ring-indigo-500/20 bg-indigo-50/40 border-indigo-200',
         className
       )}
     >
-      {/* Header Status Badge */}
-      <div className="flex items-center justify-between w-full mb-2 text-xs font-mono uppercase tracking-widest font-bold text-slate-700 flex-row-reverse">
-        <span className="flex items-center gap-2">
-          <User className="h-4 w-4 text-slate-700" />
-          <span>Customer Speech</span>
-        </span>
-        {hasSpoken && <span className="h-2.5 w-2.5 rounded-full bg-indigo-600 animate-ping" />}
-      </div>
-
-      {/* Spoken Text */}
-      <p className="line-clamp-4 leading-relaxed font-semibold text-xs md:text-sm text-slate-800">
+      {/* Spoken Text Centered */}
+      <p className="line-clamp-4 leading-relaxed font-normal text-xs md:text-sm text-slate-600">
         "{latestCustomerText}"
       </p>
     </div>

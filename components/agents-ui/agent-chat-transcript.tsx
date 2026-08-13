@@ -74,25 +74,41 @@ export function AgentChatTranscript({
           return (
             <Message key={id} title={title} from={messageOrigin}>
               {isUser ? (
-                <div className="flex items-start gap-2.5 justify-end ml-auto max-w-[85%]">
-                  <div className="rounded-2xl rounded-tr-xs bg-blue-600 px-4 py-2.5 text-white shadow-sm border border-blue-500/80">
-                    <p className="text-xs md:text-sm font-medium leading-relaxed text-white">
-                      {messageText}
-                    </p>
-                  </div>
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600/15 text-blue-600 border border-blue-200 shadow-xs mt-0.5">
-                    <User className="h-4 w-4" />
+                <div className="flex flex-col items-end max-w-[85%] ml-auto">
+                  <span className="text-[11px] font-medium text-slate-500 mb-1 mr-1">
+                    Customer
+                  </span>
+                  <div className="flex items-start gap-2.5">
+                    <div className="rounded-2xl rounded-tr-xs bg-[#cbd5e1]/90 px-4 py-2 text-slate-900 shadow-2xs border border-slate-300/60">
+                      <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-900">
+                        {messageText}
+                      </p>
+                    </div>
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5">
+                      <User className="h-4 w-4" />
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start gap-2.5 max-w-[85%]">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200/80 text-slate-700 border border-slate-300/80 shadow-xs mt-0.5">
-                    <Bot className="h-4 w-4" />
-                  </div>
-                  <div className="rounded-2xl rounded-tl-xs bg-slate-100 px-4 py-2.5 text-slate-900 shadow-xs border border-slate-200/90">
-                    <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-800">
-                      {messageText}
-                    </p>
+                <div className="flex flex-col items-start max-w-[85%]">
+                  <span className="text-[11px] font-medium text-slate-500 mb-1 ml-1">
+                    Agent
+                  </span>
+                  <div className="flex items-start gap-2.5">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5">
+                      {/* <div className="h-6 w-6"> */}
+                      <img
+                        src="/realestate-bot/agent.png"
+                        alt="agent"
+                        className="h-36 w-36 text-slate-700 drop-shadow-xs"
+                      />
+                      {/* </div> */}
+                    </div>
+                    <div className="rounded-2xl rounded-tl-xs bg-white px-4 py-3 text-slate-800 shadow-2xs border border-slate-200/80">
+                      <p className="text-xs md:text-sm leading-relaxed text-slate-800">
+                        {messageText}
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}

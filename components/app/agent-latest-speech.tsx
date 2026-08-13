@@ -19,38 +19,35 @@ export function AgentLatestSpeech({ className, fallbackText }: AgentLatestSpeech
   return (
     <div
       className={cn(
-        'relative flex w-full min-h-[125px] flex-col justify-between rounded-xl border-l-4 border-l-slate-700 border border-slate-200 bg-slate-50/90 p-4 text-left shadow-xs transition-all duration-300',
-        isSpeaking && 'border-l-blue-600 border-blue-200 bg-blue-50/60 shadow-sm ring-2 ring-blue-500/20',
-        isThinking && 'border-l-amber-500 bg-amber-50/60 shadow-xs',
+        'relative flex w-full min-h-[140px] flex-col justify-between rounded-2xl border border-slate-200/80 bg-[#f1f5f9] p-4 text-center shadow-2xs transition-all duration-300',
+        isSpeaking && 'ring-2 ring-blue-500/20 bg-blue-50/50 border-blue-200',
         className
       )}
     >
-      {/* Header Status Badge */}
-      <div className="flex items-center justify-between w-full mb-2 text-xs font-mono uppercase tracking-widest font-bold text-slate-700">
-        <span className="flex items-center gap-2">
-          {isSpeaking && <Volume2 className="h-4 w-4 text-blue-600 animate-pulse" />}
-          {isThinking && <Sparkles className="h-4 w-4 text-amber-600 animate-spin" />}
-          <span>
-            {isSpeaking ? 'Agent Speaking' : isThinking ? 'Agent Thinking' : 'Agent Speech'}
-          </span>
+      {/* Header Status Line */}
+      <div className="flex items-center justify-between w-full mb-1 text-[11px] font-medium text-slate-400">
+        <span className="flex items-center gap-1.5">
+          {isSpeaking && <Volume2 className="h-3.5 w-3.5 text-blue-600 animate-pulse" />}
+          {isThinking && <Sparkles className="h-3.5 w-3.5 text-amber-600 animate-spin" />}
+          <span>{isSpeaking ? 'Agent Speaking' : 'Agent Speech'}</span>
         </span>
-        {isSpeaking && audioTrack ? (
+        {isSpeaking && audioTrack && (
           <AgentAudioVisualizerBar
             size="icon"
             barCount={5}
             state={agentState}
             audioTrack={audioTrack}
-            className="text-blue-600 gap-[2px] h-4"
+            className="text-blue-600 gap-[2px] h-3.5"
           />
-        ) : isSpeaking ? (
-          <span className="h-2.5 w-2.5 rounded-full bg-blue-600 animate-ping" />
-        ) : null}
+        )}
       </div>
 
-      {/* Spoken Text */}
-      <p className="line-clamp-4 leading-relaxed font-semibold text-xs md:text-sm text-slate-800">
-        "{latestAgentText}"
-      </p>
+      {/* Spoken Text Centered */}
+      <div className="my-auto flex items-center justify-center py-1">
+        <p className="line-clamp-5 leading-relaxed font-normal text-xs md:text-sm text-slate-600">
+          "{latestAgentText}"
+        </p>
+      </div>
     </div>
   );
 }

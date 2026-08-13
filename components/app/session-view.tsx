@@ -13,6 +13,7 @@ import { AgentAudioVisualizerBar } from "@/components/agents-ui/agent-audio-visu
 import { AgentChatTranscript } from "@/components/agents-ui/agent-chat-transcript";
 import { AgentLatestSpeech } from "@/components/app/agent-latest-speech";
 import { CustomerLatestSpeech } from "@/components/app/customer-latest-speech";
+import { AnimatedSineWave } from "@/components/app/animated-sine-wave";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/shadcn/utils";
 
@@ -48,61 +49,46 @@ export const SessionView = ({
 
   return (
     <section
-      className="bg-background relative z-10 flex h-full w-full items-center justify-center p-3 md:p-6 overflow-hidden"
+      className="bg-[#f1f5f9]/70 relative z-10 flex h-full w-full flex-col items-center justify-between p-3 md:p-6 overflow-hidden"
       {...props}
     >
-      {/* Outer Dashboard Card */}
-      <div className="flex h-full w-full max-w-7xl flex-col gap-4 rounded-3xl border-2 border-slate-200 bg-slate-100/70 p-4 md:flex-row md:gap-6 md:p-6 shadow-xl backdrop-blur-md overflow-hidden">
+      {/* Outer Dashboard Card Grid */}
+      <div className="relative z-10 flex h-full w-full max-w-7xl flex-col gap-4 md:flex-row md:gap-6 overflow-hidden pb-8">
         {/* LEFT COLUMN: AGENT SIDE */}
-        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl border-2 border-slate-200/90 bg-white p-5 shadow-sm md:w-1/4">
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/70 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs">
           <div className="flex w-full flex-col items-center">
-            <div className="flex items-center gap-2 mb-4">
-              <Bot className="h-4 w-4 text-slate-700" />
-              <h3 className="text-xs font-extrabold uppercase tracking-widest font-mono text-slate-700">
-                Agent
-              </h3>
-            </div>
+            <h3 className="text-sm font-medium text-slate-500 mb-6">Agent</h3>
 
-            {/* Agent Avatar Placeholder & Real-time Frequency Wave */}
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-4 border-slate-300 bg-slate-100 p-1 shadow-inner">
-              <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full bg-slate-200/70 text-slate-700">
-                {/* User can replace this SVG/image placeholder with their custom image */}
-                <Bot className="h-12 w-12 drop-shadow-xs mb-0.5" />
-
-                {/* Frequency & amplitude audio wave bars */}
-                {audioTrack && (
-                  <AgentAudioVisualizerBar
-                    size="sm"
-                    barCount={5}
-                    state={agentState}
-                    audioTrack={audioTrack}
-                    className="text-blue-600 gap-1 h-5"
+            {/* Agent Avatar Concentric Circular Ring (matching screenshot) */}
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
+              <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
+                {/* <Bot className="h-12 w-12 text-slate-700 drop-shadow-xs" /> */}
+                <div className="flex h-full w-full flex-col items-center justify-center">
+                  <img
+                    src="/realestate-bot/agent.png"
+                    alt="agent"
+                    className="h-36 w-36 text-slate-700 drop-shadow-xs"
                   />
-                )}
+                </div>
               </div>
 
-              {/* Speaking Indicator pulse */}
+              {/* Speaking pulse ring */}
               {agentState === "speaking" && (
-                <span className="absolute inset-0 rounded-full border-4 border-blue-500 animate-ping opacity-60" />
+                <span className="absolute -inset-1.5 rounded-full border-2 border-blue-400 animate-ping opacity-60" />
               )}
             </div>
 
-            {/* Latest Agent Spoken Text Bubble */}
-            <AgentLatestSpeech className="mt-6" />
+            {/* Latest Agent Spoken Text Box */}
+            <AgentLatestSpeech className="mt-6 w-full" />
           </div>
-
-          {/* AGENT SIDE CONTROLS */}
         </div>
 
         {/* MIDDLE COLUMN: TRANSCRIPTION STREAM */}
-        <div className="flex flex-2 flex-col rounded-2xl border-2 border-slate-200/90 bg-white p-5 shadow-sm h-full overflow-hidden">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-200">
-            <h3 className="text-xs font-extrabold uppercase tracking-widest font-mono text-slate-800">
-              Transcription
-            </h3>
+        <div className="flex flex-2 flex-col rounded-2xl bg-[#ebf0f7]/80 p-5 shadow-2xs h-full overflow-hidden border border-slate-200/60 backdrop-blur-xs">
+          <div className="flex items-center justify-between pb-3 border-b border-dashed border-slate-300">
+            <h3 className="text-sm font-bold text-slate-800">Transcription</h3>
             {agentState && (
-              <span className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-slate-100 border border-slate-300 px-3 py-1 rounded-full uppercase tracking-wider font-mono">
-                <span className="h-2 w-2 rounded-full bg-blue-600 animate-pulse" />
+              <span className="text-xs font-semibold text-slate-600 bg-white/90 px-3 py-1 rounded-full uppercase tracking-wider font-mono shadow-2xs border border-slate-200">
                 {agentState}
               </span>
             )}
@@ -131,25 +117,21 @@ export const SessionView = ({
         </div>
 
         {/* RIGHT COLUMN: CUSTOMER SIDE */}
-        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl border-2 border-slate-200/90 bg-white p-5 shadow-sm md:w-1/4">
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/70 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs">
           <div className="flex w-full flex-col items-center">
-            <div className="flex items-center gap-2 mb-4">
-              <User className="h-4 w-4 text-slate-700" />
-              <h3 className="text-xs font-extrabold uppercase tracking-widest font-mono text-slate-700">
-                Customer
-              </h3>
-            </div>
+            <h3 className="text-sm font-medium text-slate-500 mb-6">
+              Customer
+            </h3>
 
-            {/* Customer Avatar Placeholder */}
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-4 border-slate-300 bg-slate-100 p-1 shadow-inner">
-              <div className="relative flex h-full w-full items-center justify-center rounded-full bg-slate-200/70 text-slate-700">
-                {/* User can replace this SVG/image placeholder with their custom image */}
-                <User className="h-16 w-16 drop-shadow-xs" />
+            {/* Customer Avatar Circular Ring (matching screenshot) */}
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
+              <div className="relative flex h-full w-full items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
+                <User className="h-14 w-14 text-slate-700 drop-shadow-xs" />
               </div>
             </div>
 
-            {/* Latest Customer Spoken Text Bubble */}
-            <CustomerLatestSpeech className="mt-6" />
+            {/* Latest Customer Spoken Text Box */}
+            <CustomerLatestSpeech className="mt-6 w-full" />
           </div>
 
           {/* CALL CONTROLS */}
@@ -160,7 +142,7 @@ export const SessionView = ({
                 variant={isMicrophoneEnabled ? "outline" : "destructive"}
                 size="lg"
                 onClick={toggleMic}
-                className="flex-1 rounded-xl gap-2 font-bold text-xs shadow-xs border-2 border-slate-300 bg-white hover:bg-slate-100 text-slate-800 cursor-pointer transition-transform hover:scale-105 active:scale-95"
+                className="flex-1 rounded-xl gap-2 font-bold text-xs shadow-xs border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 cursor-pointer transition-transform hover:scale-105 active:scale-95"
               >
                 {isMicrophoneEnabled ? (
                   <>
@@ -189,6 +171,9 @@ export const SessionView = ({
           </div>
         </div>
       </div>
+
+      {/* Bottom Animated Moving Sine Wave Pattern */}
+      <AnimatedSineWave className="absolute bottom-0 left-0 right-0 h-12 w-full overflow-hidden pointer-events-none z-0" />
     </section>
   );
 };
