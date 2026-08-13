@@ -74,22 +74,26 @@ export function AgentChatTranscript({
           return (
             <Message key={id} title={title} from={messageOrigin}>
               {isUser ? (
-                <div className="flex items-start gap-2.5 justify-end ml-auto">
-                  <MessageContent>
-                    <MessageResponse>{messageText}</MessageResponse>
-                  </MessageContent>
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600/15 text-blue-600 border border-blue-600/20 shadow-xs mt-0.5">
-                    <User className="h-3.5 w-3.5" />
+                <div className="flex items-start gap-2.5 justify-end ml-auto max-w-[85%]">
+                  <div className="rounded-2xl rounded-tr-xs bg-blue-600 px-4 py-2.5 text-white shadow-sm border border-blue-500/80">
+                    <p className="text-xs md:text-sm font-medium leading-relaxed text-white">
+                      {messageText}
+                    </p>
+                  </div>
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600/15 text-blue-600 border border-blue-200 shadow-xs mt-0.5">
+                    <User className="h-4 w-4" />
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start gap-2.5">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary border border-primary/20 shadow-xs mt-0.5">
-                    <Bot className="h-3.5 w-3.5" />
+                <div className="flex items-start gap-2.5 max-w-[85%]">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200/80 text-slate-700 border border-slate-300/80 shadow-xs mt-0.5">
+                    <Bot className="h-4 w-4" />
                   </div>
-                  <MessageContent>
-                    <MessageResponse>{messageText}</MessageResponse>
-                  </MessageContent>
+                  <div className="rounded-2xl rounded-tl-xs bg-slate-100 px-4 py-2.5 text-slate-900 shadow-xs border border-slate-200/90">
+                    <p className="text-xs md:text-sm font-medium leading-relaxed text-slate-800">
+                      {messageText}
+                    </p>
+                  </div>
                 </div>
               )}
             </Message>

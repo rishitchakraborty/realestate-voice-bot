@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 export function Header({
-  title = "Voice Bot Demo & Customer Journey",
+  title = "Quarkgen Realestate Voice Agent",
 }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 flex h-18 w-full items-center justify-between border-b border-border/40 px-4 py-2 shadow-xs md:px-6">
