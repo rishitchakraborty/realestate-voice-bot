@@ -7,6 +7,8 @@ import { WarningIcon } from '@phosphor-icons/react/dist/ssr';
 import type { AppConfig } from '@/app-config';
 import { AgentSessionProvider } from '@/components/agents-ui/agent-session-provider';
 import { StartAudioButton } from '@/components/agents-ui/start-audio-button';
+import { Header } from '@/components/app/header';
+import { Sidebar } from '@/components/app/sidebar';
 import { ViewController } from '@/components/app/view-controller';
 import { Toaster } from '@/components/ui/sonner';
 import { useAgentErrors } from '@/hooks/useAgentErrors';
@@ -41,9 +43,15 @@ export function App({ appConfig }: AppProps) {
   return (
     <AgentSessionProvider session={session}>
       <AppSetup />
-      <main className="grid h-svh grid-cols-1 place-content-center">
-        <ViewController appConfig={appConfig} />
-      </main>
+      <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
+        <Sidebar logoUrl="/realestate-bot/quarkLogo.png" />
+        <div className="flex flex-1 flex-col overflow-hidden">
+          <Header title="Voice Bot Demo & Customer Journey" />
+          <main className="relative flex-1 overflow-hidden">
+            <ViewController appConfig={appConfig} />
+          </main>
+        </div>
+      </div>
       <StartAudioButton label="Start Audio" />
       <Toaster
         icons={{
