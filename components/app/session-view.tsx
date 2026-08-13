@@ -1,85 +1,16 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, HTMLMotionProps, motion } from 'motion/react';
-import { useSessionContext, useSessionMessages } from '@livekit/components-react';
-import type { AppConfig } from '@/app-config';
+import React, { useEffect, useRef, useState } from "react";
 import {
-  AgentControlBar,
-  type AgentControlBarControls,
-} from '@/components/agents-ui/agent-control-bar';
-import { ChatTranscript } from '@/components/app/chat-transcript';
-import { TileLayout } from '@/components/app/tile-layout';
-import { cn } from '@/lib/shadcn/utils';
-import { Shimmer } from '../ai-elements/shimmer';
-
-const MotionBottom = motion.create('div');
-
-const MotionMessage = motion.create(Shimmer);
-
-const BOTTOM_VIEW_MOTION_PROPS = {
-  variants: {
-    visible: {
-      opacity: 1,
-      translateY: '0%',
-    },
-    hidden: {
-      opacity: 0,
-      translateY: '100%',
-    },
-  },
-  initial: 'hidden',
-  animate: 'visible',
-  exit: 'hidden',
-  transition: {
-    duration: 0.3,
-    delay: 0.5,
-    ease: 'easeOut',
-  },
-}satisfies HTMLMotionProps<"div">;
-
-const SHIMMER_MOTION_PROPS = {
-  variants: {
-    visible: {
-      opacity: 1,
-      transition: {
-        ease: 'easeIn',
-        duration: 0.5,
-        delay: 0.8,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      transition: {
-        ease: 'easeIn',
-        duration: 0.5,
-        delay: 0,
-      },
-    },
-  },
-  initial: 'hidden',
-  animate: 'visible',
-  exit: 'hidden',
-}satisfies HTMLMotionProps<"div">;
-
-interface FadeProps {
-  top?: boolean;
-  bottom?: boolean;
-  className?: string;
-}
-
-export function Fade({ top = false, bottom = false, className }: FadeProps) {
-  return (
-    <div
-      className={cn(
-        'from-background pointer-events-none h-4 bg-linear-to-b to-transparent',
-        top && 'bg-linear-to-b',
-        bottom && 'bg-linear-to-t',
-        className
-      )}
-    />
-  );
-}
+  useLocalParticipant,
+  useSessionContext,
+  useSessionMessages,
+  useVoiceAssistant,
+} from "@livekit/components-react";
+import { Mic, MicOff, PhoneOff, User, Bot, Volume2 } from "lucide-react";
+import type { AppConfig } from "@/app-config";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/shadcn/utils";
 
 interface SessionViewProps {
   appConfig: AppConfig;
@@ -88,73 +19,199 @@ interface SessionViewProps {
 export const SessionView = ({
   appConfig,
   ...props
-}: React.ComponentProps<'section'> & SessionViewProps) => {
+}: React.ComponentProps<"section"> & SessionViewProps) => {
   const session = useSessionContext();
   const { messages } = useSessionMessages(session);
-  const [chatOpen, setChatOpen] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { state: agentState } = useVoiceAssistant();
+  const { isMicrophoneEnabled, localParticipant } = useLocalParticipant();
 
-  const controls: AgentControlBarControls = {
-    leave: true,
-    microphone: true,
-    chat: appConfig.supportsChatInput,
-    camera: appConfig.supportsVideoInput,
-    screenShare: appConfig.supportsScreenShare,
-  };
+  const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto scroll transcript to bottom
   useEffect(() => {
-    const lastMessage = messages.at(-1);
-    const lastMessageIsLocal = lastMessage?.from?.isLocal === true;
-
-    if (scrollAreaRef.current && lastMessageIsLocal) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
+  // Separate agent and customer messages
+  const agentMessages = messages.filter((m) => !m.from?.isLocal);
+  const customerMessages = messages.filter((m) => m.from?.isLocal);
+
+  const latestAgentText =
+    agentMessages.at(-1)?.text ||
+    "Hello! I am your AI Agent. How can I help you today?";
+  const latestCustomerText = customerMessages.at(-1)?.text || "Listening...";
+
+  const toggleMic = async () => {
+    try {
+      await localParticipant.setMicrophoneEnabled(!isMicrophoneEnabled);
+    } catch (e) {
+      console.error("Failed to toggle mic:", e);
+    }
+  };
+
   return (
-    <section className="bg-background relative z-10 h-full w-full overflow-hidden" {...props}>
-      <Fade top className="absolute inset-x-4 top-0 z-10 h-40" />
-      {/* transcript */}
-      <ChatTranscript
-        hidden={!chatOpen}
-        messages={messages}
-        className="space-y-3 transition-opacity duration-300 ease-out"
-      />
-      {/* Tile layout */}
-      <TileLayout chatOpen={chatOpen} />
-      {/* Bottom */}
-      <MotionBottom
-        {...BOTTOM_VIEW_MOTION_PROPS}
-        className="absolute inset-x-3 bottom-0 z-50 md:inset-x-12"
-      >
-        {/* Pre-connect message */}
-        {appConfig.isPreConnectBufferEnabled && (
-          <AnimatePresence>
-            {messages.length === 0 && (
-              <MotionMessage
-                key="pre-connect-message"
-                duration={2}
-                aria-hidden={messages.length > 0}
-                {...SHIMMER_MOTION_PROPS}
-                className="pointer-events-none mx-auto block w-full max-w-2xl pb-4 text-center text-sm font-semibold"
-              >
-                Agent is listening, ask it a question
-              </MotionMessage>
-            )}
-          </AnimatePresence>
-        )}
-        <div className="bg-background relative mx-auto max-w-2xl pb-3 md:pb-12">
-          <Fade bottom className="absolute inset-x-0 top-0 h-4 -translate-y-full" />
-          <AgentControlBar
-            variant="livekit"
-            controls={controls}
-            isChatOpen={chatOpen}
-            isConnected={session.isConnected}
-            onDisconnect={session.end}
-            onIsChatOpenChange={setChatOpen}
-          />
+    <section
+      className="bg-background relative z-10 flex h-full w-full items-center justify-center p-3 md:p-6 overflow-hidden"
+      {...props}
+    >
+      {/* Outer Dashboard Card */}
+      <div className="flex h-full w-full max-w-7xl flex-col gap-4 rounded-3xl border border-border/60 bg-muted/30 p-4 md:flex-row md:gap-6 md:p-6 shadow-sm overflow-hidden">
+        {/* LEFT COLUMN: AGENT SIDE */}
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl border border-border/40 bg-card/80 p-5 shadow-xs md:w-1/4">
+          <div className="flex w-full flex-col items-center">
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Agent
+            </h3>
+
+            {/* Agent Avatar Placeholder */}
+            <div className="relative flex h-32 w-32 items-center justify-center rounded-full border-2 border-primary/40 bg-gradient-to-b from-primary/10 to-primary/5 p-1 shadow-inner">
+              <div className="relative flex h-full w-full items-center justify-center rounded-full bg-primary/15 text-primary">
+                {/* User can replace this SVG/image placeholder with their custom image */}
+                <Bot className="h-14 w-14" />
+              </div>
+
+              {/* Speaking Indicator pulse */}
+              {agentState === "speaking" && (
+                <span className="absolute inset-0 rounded-full border-2 border-primary animate-ping opacity-75" />
+              )}
+            </div>
+
+            {/* Latest Agent Spoken Text Bubble */}
+            <div className="mt-6 flex w-full min-h-[110px] items-center justify-center rounded-xl border border-border/60 bg-background/90 p-4 text-center text-xs md:text-sm font-medium text-foreground shadow-xs">
+              <p className="line-clamp-4">{latestAgentText}</p>
+            </div>
+          </div>
+
+          {/* AGENT SIDE CONTROLS: MUTE & END CALL */}
         </div>
-      </MotionBottom>
+
+        {/* MIDDLE COLUMN: TRANSCRIPTION STREAM */}
+        <div className="flex flex-2 flex-col rounded-2xl border border-border/40 bg-card/80 p-5 shadow-xs h-full overflow-hidden">
+          <div className="flex items-center justify-between pb-3 border-b border-border/40">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Transcription
+            </h3>
+            {agentState && (
+              <span className="flex items-center gap-1.5 text-[11px] font-medium text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                {agentState}
+              </span>
+            )}
+          </div>
+
+          {/* Transcript Scroll Area */}
+          <div
+            ref={scrollRef}
+            className="flex-1 overflow-y-auto space-y-4 py-4 px-2 scrollbar-thin"
+          >
+            {messages.length === 0 ? (
+              <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground text-xs p-6">
+                <Volume2 className="h-8 w-8 mb-2 opacity-40 animate-pulse" />
+                <p>Call connected. Agent is listening...</p>
+              </div>
+            ) : (
+              messages.map((msg, idx) => {
+                const isUser = msg.from?.isLocal;
+                return (
+                  <div
+                    key={msg.id || idx}
+                    className={cn(
+                      "flex items-start gap-2.5 text-xs md:text-sm",
+                      isUser ? "justify-end" : "justify-start",
+                    )}
+                  >
+                    {!isUser && (
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20">
+                        <Bot className="h-3.5 w-3.5" />
+                      </div>
+                    )}
+
+                    <div
+                      className={cn(
+                        "max-w-[80%] rounded-2xl px-4 py-2.5 shadow-xs leading-relaxed",
+                        isUser
+                          ? "bg-blue-600 text-white rounded-tr-xs"
+                          : "bg-muted/80 text-foreground border border-border/50 rounded-tl-xs",
+                      )}
+                    >
+                      <div className="mb-0.5 text-[10px] font-semibold opacity-70">
+                        {isUser ? "Customer" : "Agent"}
+                      </div>
+                      <p>{msg.text}</p>
+                    </div>
+
+                    {isUser && (
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-600 border border-blue-600/20">
+                        <User className="h-3.5 w-3.5" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: CUSTOMER SIDE */}
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl border border-border/40 bg-card/80 p-5 shadow-xs md:w-1/4">
+          <div className="flex w-full flex-col items-center">
+            <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Customer
+            </h3>
+
+            {/* Customer Avatar Placeholder */}
+            <div className="relative flex h-32 w-32 items-center justify-center rounded-full border-2 border-blue-500/40 bg-gradient-to-b from-blue-500/10 to-blue-500/5 p-1 shadow-inner">
+              <div className="relative flex h-full w-full items-center justify-center rounded-full bg-blue-500/15 text-blue-500">
+                {/* User can replace this SVG/image placeholder with their custom image */}
+                <User className="h-14 w-14" />
+              </div>
+            </div>
+
+            {/* Latest Customer Spoken Text Bubble */}
+            <div className="mt-6 flex w-full min-h-[110px] items-center justify-center rounded-xl border border-border/60 bg-background/90 p-4 text-center text-xs md:text-sm font-medium text-foreground shadow-xs">
+              <p className="line-clamp-4">{latestCustomerText}</p>
+            </div>
+          </div>
+
+          {/* CUSTOMER SIDE ACTION */}
+          <div className="mt-6 flex w-full flex-col gap-2">
+            <div className="flex items-center justify-center gap-3">
+              {/* Mute / Unmute Button */}
+              <Button
+                variant={isMicrophoneEnabled ? "outline" : "destructive"}
+                size="lg"
+                onClick={toggleMic}
+                className="flex-1 rounded-xl gap-2 font-medium text-xs shadow-xs cursor-pointer"
+              >
+                {isMicrophoneEnabled ? (
+                  <>
+                    <Mic className="h-4 w-4 text-emerald-500" />
+                    <span>Mute</span>
+                  </>
+                ) : (
+                  <>
+                    <MicOff className="h-4 w-4" />
+                    <span>Unmute</span>
+                  </>
+                )}
+              </Button>
+
+              {/* End Call Button */}
+              <Button
+                variant="destructive"
+                size="lg"
+                onClick={() => session.end()}
+                className="flex-1 rounded-xl gap-2 font-medium text-xs shadow-xs bg-red-600 hover:bg-red-700 text-white cursor-pointer"
+              >
+                <PhoneOff className="h-4 w-4" />
+                <span>End Call</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
