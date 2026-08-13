@@ -9,6 +9,7 @@ import {
 } from "@livekit/components-react";
 import { Mic, MicOff, PhoneOff, User, Bot, Volume2 } from "lucide-react";
 import type { AppConfig } from "@/app-config";
+import { AgentChatTranscript } from "@/components/agents-ui/agent-chat-transcript";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/shadcn/utils";
 
@@ -101,55 +102,19 @@ export const SessionView = ({
             )}
           </div>
 
-          {/* Transcript Scroll Area */}
-          <div
-            ref={scrollRef}
-            className="flex-1 overflow-y-auto space-y-4 py-4 px-2 scrollbar-thin"
-          >
+          {/* Transcript Scroll Area using AgentChatTranscript */}
+          <div className="flex-1 overflow-y-auto py-2 px-1 relative">
             {messages.length === 0 ? (
               <div className="flex h-full flex-col items-center justify-center text-center text-muted-foreground text-xs p-6">
                 <Volume2 className="h-8 w-8 mb-2 opacity-40 animate-pulse" />
                 <p>Call connected. Agent is listening...</p>
               </div>
             ) : (
-              messages.map((msg, idx) => {
-                const isUser = msg.from?.isLocal;
-                return (
-                  <div
-                    key={msg.id || idx}
-                    className={cn(
-                      "flex items-start gap-2.5 text-xs md:text-sm",
-                      isUser ? "justify-end" : "justify-start",
-                    )}
-                  >
-                    {!isUser && (
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary border border-primary/20">
-                        <Bot className="h-3.5 w-3.5" />
-                      </div>
-                    )}
-
-                    <div
-                      className={cn(
-                        "max-w-[80%] rounded-2xl px-4 py-2.5 shadow-xs leading-relaxed",
-                        isUser
-                          ? "bg-blue-600 text-white rounded-tr-xs"
-                          : "bg-muted/80 text-foreground border border-border/50 rounded-tl-xs",
-                      )}
-                    >
-                      <div className="mb-0.5 text-[10px] font-semibold opacity-70">
-                        {isUser ? "Customer" : "Agent"}
-                      </div>
-                      <p>{msg.text}</p>
-                    </div>
-
-                    {isUser && (
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-600 border border-blue-600/20">
-                        <User className="h-3.5 w-3.5" />
-                      </div>
-                    )}
-                  </div>
-                );
-              })
+              <AgentChatTranscript
+                agentState={agentState}
+                messages={messages}
+                className="h-full w-full"
+              />
             )}
           </div>
         </div>
