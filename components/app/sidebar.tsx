@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { PhoneCall } from "lucide-react";
+import { BarChart3, PhoneCall } from "lucide-react";
 import { cn } from "@/lib/shadcn/utils";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -40,11 +40,12 @@ export function Sidebar({
 
       {/* Navigation Menu */}
       <nav className="flex w-full flex-col items-center gap-2 px-1">
+        {/* Live Call Tab */}
         <button
           type="button"
           onClick={() => onTabChange?.("live-call")}
           className={cn(
-            "group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 transition-all duration-200",
+            "group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 transition-all duration-200 cursor-pointer",
             activeTab === "live-call"
               ? "bg-primary/10 text-primary font-semibold shadow-xs"
               : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
@@ -66,6 +67,36 @@ export function Sidebar({
           </div>
           <span className="mt-1 text-[10px] font-medium tracking-tight">
             Live Call
+          </span>
+        </button>
+
+        {/* Analytics Tab */}
+        <button
+          type="button"
+          onClick={() => onTabChange?.("analytics")}
+          className={cn(
+            "group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 transition-all duration-200 cursor-pointer",
+            activeTab === "analytics"
+              ? "bg-primary/10 text-primary font-semibold shadow-xs"
+              : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+          )}
+          title="Analytics"
+        >
+          {/* Active indicator bar on left */}
+          {activeTab === "analytics" && (
+            <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-primary" />
+          )}
+
+          <div className="relative flex h-6 w-6 items-center justify-center">
+            <BarChart3
+              className={cn(
+                "h-5 w-5 transition-transform duration-200 group-hover:scale-110",
+                activeTab === "analytics" && "scale-105",
+              )}
+            />
+          </div>
+          <span className="mt-1 text-[10px] font-medium tracking-tight">
+            Analytics
           </span>
         </button>
       </nav>

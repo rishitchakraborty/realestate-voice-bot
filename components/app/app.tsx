@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import { TokenSource } from "livekit-client";
 import { useSession } from "@livekit/components-react";
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
@@ -10,6 +10,7 @@ import { StartAudioButton } from "@/components/agents-ui/start-audio-button";
 import { Header } from "@/components/app/header";
 import { Sidebar } from "@/components/app/sidebar";
 import { ViewController } from "@/components/app/view-controller";
+import { AnalyticsView } from "@/components/app/analytics-view";
 import { Toaster } from "@/components/ui/sonner";
 import { useAgentErrors } from "@/hooks/useAgentErrors";
 import { useDebugMode } from "@/hooks/useDebug";
@@ -29,6 +30,8 @@ interface AppProps {
 }
 
 export function App({ appConfig }: AppProps) {
+  const [activeTab, setActiveTab] = useState<"live-call" | "analytics">("live-call");
+
   const tokenSource = useMemo(() => {
     return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
       ? getSandboxTokenSource(appConfig)
@@ -44,11 +47,25 @@ export function App({ appConfig }: AppProps) {
     <AgentSessionProvider session={session}>
       <AppSetup />
       <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
-        <Sidebar logoUrl="/realestate-bot/quarkLogo.png" />
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab as "live-call" | "analytics")}
+          logoUrl="/realestate-bot/quarkLogo.png"
+        />
         <div className="flex flex-1 flex-col overflow-hidden">
-          <Header title="Quarkgen Realestate Voice Agent" />
+          <Header
+            title={
+              activeTab === "analytics"
+                ? "Customer Call Analytics · Godrej Verdant (GDJ-VERDANT)"
+                : "Quarkgen Realestate Voice Agent"
+            }
+          />
           <main className="relative flex-1 overflow-hidden">
-            <ViewController appConfig={appConfig} />
+            {activeTab === "analytics" ? (
+              <AnalyticsView />
+            ) : (
+              <ViewController appConfig={appConfig} />
+            )}
           </main>
         </div>
       </div>
