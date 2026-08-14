@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import { BarChart3, PhoneCall } from "lucide-react";
+import { BarChart3, LogOut, PhoneCall } from "lucide-react";
 import { cn } from "@/lib/shadcn/utils";
 import { ThemeToggle } from "./theme-toggle";
 
 interface SidebarProps {
   activeTab?: string;
   onTabChange?: (tab: string) => void;
+  onLogout?: () => void;
   logoUrl?: string;
   className?: string;
 }
@@ -15,6 +16,7 @@ interface SidebarProps {
 export function Sidebar({
   activeTab = "live-call",
   onTabChange,
+  onLogout,
   logoUrl = "/realestate-bot/quarkLogo.png",
   className,
 }: SidebarProps) {
@@ -101,9 +103,19 @@ export function Sidebar({
         </button>
       </nav>
 
-      {/* Bottom status badge */}
-      <div className="mt-auto flex flex-col items-center gap-1 pt-4 text-[9px] text-muted-foreground">
-        <ThemeToggle />
+      {/* Bottom status badge & controls */}
+      <div className="mt-auto flex flex-col items-center gap-2 pt-4 text-[9px] text-muted-foreground">
+        {onLogout && (
+          <button
+            type="button"
+            onClick={onLogout}
+            title="Log out"
+            className="flex h-8 w-8 items-center justify-center rounded-xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors cursor-pointer"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
+        )}
+        {/* <ThemeToggle /> */}
       </div>
     </aside>
   );
