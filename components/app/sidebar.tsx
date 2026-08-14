@@ -72,7 +72,7 @@ export function Sidebar({
 
       {/* Bottom status badge */}
       <div className="mt-auto flex flex-col items-center gap-1 pt-4 text-[9px] text-muted-foreground">
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
       </div>
     </aside>
   );
