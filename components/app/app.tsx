@@ -76,7 +76,7 @@ export function App({ appConfig }: AppProps) {
   const tokenSource = useMemo(() => {
     return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
       ? getSandboxTokenSource(appConfig)
-      : TokenSource.endpoint("/realestate-bot/api/connection-details");
+      : TokenSource.endpoint("/realestate-demo-bot/api/connection-details");
   }, [appConfig]);
 
   const session = useSession(
@@ -87,7 +87,7 @@ export function App({ appConfig }: AppProps) {
   if (!isAuthenticated) {
     return (
       <>
-        <LoginView onSuccess={handleLoginSuccess} logoUrl="/realestate-bot/quarkLogo.png" />
+        <LoginView onSuccess={handleLoginSuccess} logoUrl="/realestate-demo-bot/quarkLogo.png" />
         <Toaster
           icons={{
             warning: <WarningIcon weight="bold" />,
@@ -107,7 +107,7 @@ export function App({ appConfig }: AppProps) {
           activeTab={activeTab}
           onTabChange={(tab) => setActiveTab(tab as "live-call" | "analytics")}
           onLogout={handleLogout}
-          logoUrl="/realestate-bot/quarkLogo.png"
+          logoUrl="/realestate-demo-bot/quarkLogo.png"
         />
         <div className="flex flex-1 flex-col overflow-hidden">
           <Header

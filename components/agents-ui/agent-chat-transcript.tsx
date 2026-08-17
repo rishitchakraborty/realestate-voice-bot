@@ -89,7 +89,7 @@ export function AgentChatTranscript({
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5 overflow-hidden">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src="/realestate-bot/customer.png"
+                          src="/realestate-demo-bot/customer.png"
                           alt="agent"
                           className="h-full w-full object-cover rounded-full"
                           onError={(e) => {
@@ -109,7 +109,7 @@ export function AgentChatTranscript({
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs mt-0.5 overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        src="/realestate-bot/agent.png"
+                        src="/realestate-demo-bot/agent.png"
                         alt="agent"
                         className="h-full w-full object-cover rounded-full"
                         onError={(e) => {

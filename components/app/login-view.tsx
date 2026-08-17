@@ -28,7 +28,7 @@ interface LoginViewProps {
 
 export function LoginView({
   onSuccess,
-  logoUrl = "/realestate-bot/quarkLogo.png",
+  logoUrl = "/realestate-demo-bot/quarkLogo.png",
 }: LoginViewProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -211,7 +211,7 @@ export function LoginView({
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="admin@quarkgen.ai"
+                    // placeholder="admin@quarkgen.ai"
                     className="w-full rounded-xl border border-slate-300 bg-slate-50/70 py-2.5 pl-9 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white transition-all"
                   />
                 </div>

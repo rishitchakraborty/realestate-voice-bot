@@ -17,7 +17,7 @@ export function Sidebar({
   activeTab = "live-call",
   onTabChange,
   onLogout,
-  logoUrl = "/realestate-bot/quarkLogo.png",
+  logoUrl = "/realestate-demo-bot/quarkLogo.png",
   className,
 }: SidebarProps) {
   return (

@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  basePath: '/realestate-bot', // Set the base path for your application
+  basePath: '/realestate-demo-bot', // Set the base path for your application
 };
 
 export default nextConfig;
