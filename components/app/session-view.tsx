@@ -55,17 +55,22 @@ export const SessionView = ({
       {/* Outer Dashboard Card Grid */}
       <div className="relative z-10 flex h-full w-full max-w-7xl flex-col gap-4 md:flex-row md:gap-6 overflow-hidden pb-8">
         {/* LEFT COLUMN: AGENT SIDE */}
-        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/70 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs">
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/80 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs border border-slate-200/80">
           <div className="flex w-full flex-col items-center">
-            <h3 className="text-sm font-medium text-slate-500 mb-6">Agent</h3>
+            <div className="flex items-center gap-1.5 mb-5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#0f2b48]">
+                Alcove AI Specialist
+              </h3>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            </div>
 
-            {/* Agent Avatar Concentric Circular Ring (matching screenshot) */}
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
+            {/* Agent Avatar Concentric Circular Ring */}
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-amber-300/80 bg-white p-2 shadow-xs">
               <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/alcove-reality-bot/agent.png"
-                  alt="Agent Avatar"
+                  alt="Alcove Agent Avatar"
                   className="h-full w-full object-cover rounded-full"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = "/agent.png";
@@ -75,7 +80,7 @@ export const SessionView = ({
 
               {/* Speaking pulse ring */}
               {agentState === "speaking" && (
-                <span className="absolute -inset-1.5 rounded-full border-2 border-blue-400 animate-ping opacity-60" />
+                <span className="absolute -inset-1.5 rounded-full border-2 border-amber-500 animate-ping opacity-60" />
               )}
             </div>
 
@@ -118,23 +123,22 @@ export const SessionView = ({
         </div>
 
         {/* RIGHT COLUMN: CUSTOMER SIDE */}
-        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/70 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs">
+        <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/80 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs border border-slate-200/80">
           <div className="flex w-full flex-col items-center">
-            <h3 className="text-sm font-medium text-slate-500 mb-6">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-5">
               Customer
             </h3>
 
-            {/* Customer Avatar Circular Ring (matching screenshot) */}
+            {/* Customer Avatar Circular Ring */}
             <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 border-slate-300/80 bg-white p-2 shadow-xs">
               <div className="relative flex h-full w-full items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
-                {/* <User className="h-14 w-14 text-slate-700 drop-shadow-xs" /> */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/alcove-reality-bot/customer.png"
-                  alt="Agent Avatar"
+                  alt="Customer Avatar"
                   className="h-full w-full object-cover rounded-full"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/agent.png";
+                    (e.target as HTMLImageElement).src = "/customer.png";
                   }}
                 />
               </div>

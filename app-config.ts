@@ -22,20 +22,20 @@ export interface AppConfig {
 }
 
 export const APP_CONFIG_DEFAULTS: AppConfig = {
-  companyName: 'LiveKit',
-  pageTitle: 'LiveKit Voice Agent',
-  pageDescription: 'A voice agent built with LiveKit',
+  companyName: 'Alcove Realty',
+  pageTitle: 'Alcove Realty | AI Voice Assistant',
+  pageDescription: 'Experience Alcove Realty’s intelligent AI voice assistant for premier luxury and residential projects in Kolkata. Powered by QuarkGen.',
 
   supportsChatInput: true,
   supportsVideoInput: true,
   supportsScreenShare: true,
   isPreConnectBufferEnabled: true,
 
-  logo: '/lk-logo.svg',
-  accent: '#002cf2',
-  logoDark: '/lk-logo-dark.svg',
-  accentDark: '#1fd5f9',
-  startButtonText: 'Start call',
+  logo: '/alcove-reality-bot/alcove.webp',
+  accent: '#0f2b48',
+  logoDark: '/alcove-reality-bot/alcove.webp',
+  accentDark: '#38bdf8',
+  startButtonText: 'Start Voice Consultation',
 
   // agent dispatch configuration
   agentName: process.env.AGENT_NAME ?? undefined,

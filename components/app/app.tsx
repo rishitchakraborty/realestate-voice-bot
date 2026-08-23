@@ -46,7 +46,7 @@ export function App({ appConfig }: AppProps) {
       <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
         <Sidebar logoUrl="/alcove-reality-bot/alcove.webp" />
         <div className="flex flex-1 flex-col overflow-hidden">
-          <Header title="Quarkgen Realestate Voice Agent" />
+          <Header title="Alcove Realty AI Voice Assistant" />
           <main className="relative flex-1 overflow-hidden">
             <ViewController appConfig={appConfig} />
           </main>

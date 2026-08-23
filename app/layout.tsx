@@ -62,8 +62,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     >
       <head>
         {styles && <style>{styles}</style>}
-        <title>Quarkgen Real Estate</title>
-        <meta name="description" content={pageDescription} />
+        <title>Alcove Realty | AI Voice Assistant - Powered by QuarkGen</title>
+        <meta
+          name="description"
+          content={
+            pageDescription ||
+            "Experience Alcove Realty’s intelligent AI voice assistant for premier luxury residential and commercial developments in Kolkata. Powered by QuarkGen."
+          }
+        />
       </head>
       <body className="overflow-x-hidden">
         <ThemeProvider
