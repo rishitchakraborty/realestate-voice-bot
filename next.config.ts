@@ -1,4 +1,4 @@
-import type { NextConfig } from 'next';
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  basePath: '/realestate-bot', // Set the base path for your application
+  basePath: "/alcove-reality-bot", // Set the base path for your application
 };
 
 export default nextConfig;

@@ -64,7 +64,7 @@ export const SessionView = ({
               <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/realestate-bot/agent.png"
+                  src="/alcove-reality-bot/agent.png"
                   alt="Agent Avatar"
                   className="h-full w-full object-cover rounded-full"
                   onError={(e) => {
@@ -130,7 +130,7 @@ export const SessionView = ({
                 {/* <User className="h-14 w-14 text-slate-700 drop-shadow-xs" /> */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/realestate-bot/customer.png"
+                  src="/alcove-reality-bot/customer.png"
                   alt="Agent Avatar"
                   className="h-full w-full object-cover rounded-full"
                   onError={(e) => {

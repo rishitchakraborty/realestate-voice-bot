@@ -15,7 +15,7 @@ interface SidebarProps {
 export function Sidebar({
   activeTab = "live-call",
   onTabChange,
-  logoUrl = "/realestate-bot/quarkLogo.png",
+  logoUrl = "/alcove-reality-bot/quarkLogo.png",
   className,
 }: SidebarProps) {
   return (
@@ -33,7 +33,7 @@ export function Sidebar({
           alt="Logo"
           className="h-7 w-auto max-w-full object-contain"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/quarkLogo.png";
+            (e.target as HTMLImageElement).src = "/alcove.webp";
           }}
         />
       </div>

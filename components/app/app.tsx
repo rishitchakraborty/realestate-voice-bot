@@ -32,7 +32,7 @@ export function App({ appConfig }: AppProps) {
   const tokenSource = useMemo(() => {
     return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
       ? getSandboxTokenSource(appConfig)
-      : TokenSource.endpoint("/realestate-bot/api/connection-details");
+      : TokenSource.endpoint("/alcove-reality-bot/api/connection-details");
   }, [appConfig]);
 
   const session = useSession(
@@ -44,7 +44,7 @@ export function App({ appConfig }: AppProps) {
     <AgentSessionProvider session={session}>
       <AppSetup />
       <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
-        <Sidebar logoUrl="/realestate-bot/quarkLogo.png" />
+        <Sidebar logoUrl="/alcove-reality-bot/alcove.webp" />
         <div className="flex flex-1 flex-col overflow-hidden">
           <Header title="Quarkgen Realestate Voice Agent" />
           <main className="relative flex-1 overflow-hidden">
