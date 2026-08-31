@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { TokenSource } from "livekit-client";
 import { useSession } from "@livekit/components-react";
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
@@ -10,6 +10,7 @@ import { StartAudioButton } from "@/components/agents-ui/start-audio-button";
 import { Header } from "@/components/app/header";
 import { Sidebar } from "@/components/app/sidebar";
 import { ViewController } from "@/components/app/view-controller";
+import { CustomerCallAnalytics } from "@/components/analytics/customer-call-analytics";
 import { Toaster } from "@/components/ui/sonner";
 import { useAgentErrors } from "@/hooks/useAgentErrors";
 import { useDebugMode } from "@/hooks/useDebug";
@@ -29,6 +30,8 @@ interface AppProps {
 }
 
 export function App({ appConfig }: AppProps) {
+  const [activeTab, setActiveTab] = useState<string>("analytics");
+
   const tokenSource = useMemo(() => {
     return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
       ? getSandboxTokenSource(appConfig)
@@ -44,13 +47,24 @@ export function App({ appConfig }: AppProps) {
     <AgentSessionProvider session={session}>
       <AppSetup />
       <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
-        <Sidebar logoUrl="/alcove-reality-bot/alcove.webp" />
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <Header title="Alcove Realty AI Voice Assistant" />
-          <main className="relative flex-1 overflow-hidden">
-            <ViewController appConfig={appConfig} />
-          </main>
-        </div>
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          logoUrl="/alcove-reality-bot/alcove.webp"
+        />
+
+        {activeTab === "analytics" ? (
+          <div className="flex flex-1 flex-col overflow-y-auto">
+            <CustomerCallAnalytics />
+          </div>
+        ) : (
+          <div className="flex flex-1 flex-col overflow-hidden">
+            <Header title="Alcove Realty AI Voice Assistant" />
+            <main className="relative flex-1 overflow-hidden">
+              <ViewController appConfig={appConfig} />
+            </main>
+          </div>
+        )}
       </div>
       <StartAudioButton label="Start Audio" />
       <Toaster
