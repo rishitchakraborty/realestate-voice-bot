@@ -62,12 +62,13 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     >
       <head>
         {styles && <style>{styles}</style>}
-        <title>Alcove Realty | AI Voice Assistant - Powered by QuarkGen</title>
+        <link rel="icon" href="/novesta-bot/novesta/favicon.jpeg" />
+        <title>{pageTitle || "Novesta Group | AI Voice Assistant - Residential Plots & Luxury Bungalows"}</title>
         <meta
           name="description"
           content={
             pageDescription ||
-            "Experience Alcove Realty’s intelligent AI voice assistant for premier luxury residential and commercial developments in Kolkata. Powered by QuarkGen."
+            "Explore premium residential plots, gated communities, and luxury bungalows in Kolkata with Novesta Group's intelligent voice assistant. Legal cleared plots, eco-living, and high ROI in Rajarhat & Madhyamgram. Powered by QuarkGen."
           }
         />
       </head>

@@ -22,20 +22,21 @@ export interface AppConfig {
 }
 
 export const APP_CONFIG_DEFAULTS: AppConfig = {
-  companyName: 'Alcove Realty',
-  pageTitle: 'Alcove Realty | AI Voice Assistant',
-  pageDescription: 'Experience Alcove Realty’s intelligent AI voice assistant for premier luxury and residential projects in Kolkata. Powered by QuarkGen.',
+  companyName: "Novesta Group",
+  pageTitle: "Novesta Group | AI Voice Assistant - Residential Plots & Luxury Bungalows",
+  pageDescription:
+    "Explore premium residential plots, gated communities, and luxury bungalows in Kolkata with Novesta Group's intelligent AI voice assistant. Legal cleared plots, eco-living, and high ROI in Rajarhat & Madhyamgram. Powered by QuarkGen.",
 
   supportsChatInput: true,
   supportsVideoInput: true,
   supportsScreenShare: true,
   isPreConnectBufferEnabled: true,
 
-  logo: '/alcove-reality-bot/alcove.webp',
-  accent: '#0f2b48',
-  logoDark: '/alcove-reality-bot/alcove.webp',
-  accentDark: '#38bdf8',
-  startButtonText: 'Start Voice Consultation',
+  logo: "/novesta-bot/novesta/white-logo.png",
+  accent: "#0e1230",
+  logoDark: "/novesta-bot/novesta/white-logo.png",
+  accentDark: "#c9a24c",
+  startButtonText: "Start Voice Consultation",
 
   // agent dispatch configuration
   agentName: process.env.AGENT_NAME ?? undefined,

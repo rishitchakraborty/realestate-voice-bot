@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  basePath: "/alcove-reality-bot", // Set the base path for your application
+  // basePath: "/novesta-bot", // Set the base path for your application
+  basePath: "/novesta-bot", // Set the base path for your application
 };
 
 export default nextConfig;

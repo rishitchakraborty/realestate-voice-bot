@@ -156,7 +156,7 @@ export function FunnelWidgets() {
           <li className="flex items-start gap-2">
             <span className="text-slate-400">•</span>
             <span>
-              Full field dictionary, disposition definitions and the post-call LLM schema are in the companion <em>Alcove Call Analytics</em> brief.
+              Full field dictionary, disposition definitions and the post-call LLM schema are in the companion <em>Novesta Call Analytics</em> brief.
             </span>
           </li>
         </ul>

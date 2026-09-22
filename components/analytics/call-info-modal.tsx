@@ -206,7 +206,7 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
               <div className="space-y-2 font-mono text-[11px] text-slate-700">
                 <p>
                   <span className="font-bold text-blue-600">AI:</span> Hello, am I speaking
-                  with {call.customerName}? Calling from Alcove Realty regarding your enquiry.
+                  with {call.customerName}? Calling from Novesta Group regarding your enquiry.
                 </p>
                 <p>
                   <span className="font-bold text-emerald-600">Customer:</span> Yes, I was
@@ -214,7 +214,7 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
                 </p>
                 <p>
                   <span className="font-bold text-blue-600">AI:</span> Wonderful! We have
-                  exclusive premium units fitting your requirement.
+                  exclusive premium residential plots and bungalows fitting your requirement.
                 </p>
               </div>
             )}

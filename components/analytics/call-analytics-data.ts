@@ -143,27 +143,25 @@ export const PURPOSE_SPLIT_DATA = [
   { purpose: 'Staying', count: 38, percentage: 41.3 },
 ];
 
-// Kolkata micro-markets for Alcove Realty projects
+// Kolkata micro-markets for Novesta Group projects
 export const PROJECT_DEMAND_DATA = [
-  { location: 'Serampore (Hooghly)', count: 92, percentage: 100 },
-  { location: 'Topsia / EM Bypass', count: 74, percentage: 80.4 },
-  { location: 'VIP Road / Lake Town', count: 58, percentage: 63.0 },
-  { location: 'Batanagar / Maheshtala', count: 47, percentage: 51.1 },
-  { location: 'Chowringhee / Central', count: 30, percentage: 32.6 },
-  { location: 'New Town / Rajarhat', count: 24, percentage: 26.1 },
+  { location: 'NH-12 / Airport (Aerocity)', count: 92, percentage: 100 },
+  { location: 'Newtown Rajarhat (Eco Smart)', count: 74, percentage: 80.4 },
+  { location: 'Ganges Riverfront (Resort)', count: 58, percentage: 63.0 },
+  { location: 'Madhyamgram / Barasat', count: 47, percentage: 51.1 },
+  { location: 'Action Area II', count: 30, percentage: 32.6 },
+  { location: 'VIP Road Corridor', count: 24, percentage: 26.1 },
 ];
 
-// Real Alcove Realty Projects extracted from https://www.alcoverealty.in/
+// Novesta Group Projects extracted from https://novestagroup.in/
 export const WORKFLOW_OPTIONS = [
-  { id: 'ALC-NKOL', name: 'New Kolkata — Serampore (ALC-NKOL)' },
-  { id: 'ALC-FLORA', name: 'Flora Fountain — Topsia (ALC-FLORA)' },
-  { id: 'ALC-THE42', name: 'The 42 — Chowringhee (ALC-THE42)' },
-  { id: 'ALC-GLORIA', name: 'Alcove Gloria — VIP Road (ALC-GLORIA)' },
-  { id: 'ALC-CURVE', name: 'The Curve — Batanagar (ALC-CURVE)' },
-  { id: 'ALC-REGENCY', name: 'Alcove Regency — EM Bypass (ALC-REGENCY)' },
+  { id: 'NOV-AERO', name: 'Unicorn Aerocity — NH-12 / Airport (NOV-AERO)' },
+  { id: 'NOV-ECO', name: 'Eco Smart City — Newtown Rajarhat (NOV-ECO)' },
+  { id: 'NOV-RIVER', name: 'Unicorn Riverside Resort — Ganges (NOV-RIVER)' },
+  { id: 'NOV-BUNGALOW', name: 'The Art of the Bungalow — Luxury Plots (NOV-BUNGALOW)' },
 ];
 
-// 120 mock calls matching the exact statistics and sample rows from the images, customized for Alcove Realty
+// 120 mock calls matching the exact statistics and sample rows, customized for Novesta Group
 const FIRST_10_CALLS: CallRecord[] = [
   {
     id: 'call-1',
@@ -175,9 +173,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'English',
     purpose: 'Investment',
-    preferredLocation: 'Serampore',
-    configuration: '2 BHK',
-    budgetRange: '₹45L–₹60L',
+    preferredLocation: 'NH-12 / Airport',
+    configuration: '1000 Sq.Ft. Plot',
+    budgetRange: '₹40L–₹50L',
     disposition: 'Site Visit Booked',
     timestamp: '2026-08-14T10:14:22Z',
     leadScore: 92,
@@ -193,9 +191,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'Hindi',
     purpose: 'Staying',
-    preferredLocation: 'Topsia / EM Bypass',
-    configuration: '3 BHK',
-    budgetRange: '₹1.2Cr–₹1.5Cr',
+    preferredLocation: 'Newtown Rajarhat',
+    configuration: '2000 Sq.Ft. Plot',
+    budgetRange: '₹75L–₹95L',
     disposition: 'Not Interested',
     timestamp: '2026-08-14T09:42:15Z',
     leadScore: 35,
@@ -228,9 +226,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'Hindi',
     purpose: 'Investment',
-    preferredLocation: 'VIP Road / Lake Town',
-    configuration: '3 BHK',
-    budgetRange: '₹1.1Cr–₹1.4Cr',
+    preferredLocation: 'Ganges Riverfront',
+    configuration: 'Bungalow Villa',
+    budgetRange: '₹1.4Cr–₹1.8Cr',
     disposition: 'Callback Requested',
     timestamp: '2026-08-14T08:55:40Z',
     leadScore: 78,
@@ -246,7 +244,7 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'English',
     purpose: '—',
-    preferredLocation: 'Serampore',
+    preferredLocation: 'NH-12 / Airport',
     configuration: '—',
     budgetRange: '—',
     disposition: 'Do Not Call',
@@ -264,9 +262,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'English',
     purpose: 'Staying',
-    preferredLocation: 'Chowringhee',
-    configuration: '4 BHK',
-    budgetRange: '₹18Cr–₹22Cr',
+    preferredLocation: 'Newtown Rajarhat',
+    configuration: '4000 Sq.Ft. Plot',
+    budgetRange: '₹1.4Cr–₹1.8Cr',
     disposition: 'Dropped Mid-Call',
     timestamp: '2026-08-13T16:45:00Z',
     leadScore: 40,
@@ -299,9 +297,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'English',
     purpose: 'Investment',
-    preferredLocation: 'Batanagar',
-    configuration: '2 BHK',
-    budgetRange: '₹60L–₹75L',
+    preferredLocation: 'NH-12 / Airport',
+    configuration: '1000 Sq.Ft. Plot',
+    budgetRange: '₹40L–₹55L',
     disposition: 'No Response',
     timestamp: '2026-08-13T14:15:29Z',
     leadScore: 30,
@@ -317,9 +315,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'Hindi',
     purpose: 'Staying',
-    preferredLocation: 'Serampore',
-    configuration: '3 BHK',
-    budgetRange: '₹55L–₹70L',
+    preferredLocation: 'Ganges Riverfront',
+    configuration: '3 BHK Villa',
+    budgetRange: '₹90L–₹1.2Cr',
     disposition: 'Site Visit Booked',
     timestamp: '2026-08-13T12:50:04Z',
     leadScore: 95,
@@ -335,9 +333,9 @@ const FIRST_10_CALLS: CallRecord[] = [
     recordingAvailable: false,
     language: 'English',
     purpose: 'Investment',
-    preferredLocation: 'Topsia / EM Bypass',
-    configuration: '2 BHK',
-    budgetRange: '₹85L–₹1.1Cr',
+    preferredLocation: 'Newtown Rajarhat',
+    configuration: '2000 Sq.Ft. Plot',
+    budgetRange: '₹75L–₹95L',
     disposition: 'Not Interested',
     timestamp: '2026-08-13T11:22:33Z',
     leadScore: 45,
@@ -376,20 +374,20 @@ function generateMockCalls(): CallRecord[] {
 
   let idCounter = 11;
   const locations = [
-    'Serampore',
-    'Topsia / EM Bypass',
-    'VIP Road / Lake Town',
-    'Batanagar / Maheshtala',
-    'Chowringhee',
-    'New Town / Rajarhat',
+    'NH-12 / Airport',
+    'Newtown Rajarhat',
+    'Ganges Riverfront',
+    'Madhyamgram',
+    'Action Area II',
+    'Barasat',
   ];
-  const bhks = ['1 BHK', '2 BHK', '3 BHK', '4 BHK'];
+  const bhks = ['1000 Sq.Ft. Plot', '2000 Sq.Ft. Plot', '4000 Sq.Ft. Plot', '3 BHK Bungalow', '4 BHK Villa'];
   const budgets = [
-    '₹35L–₹50L',
-    '₹55L–₹75L',
-    '₹85L–₹1.1Cr',
-    '₹1.2Cr–₹1.6Cr',
-    '₹1.8Cr–₹2.5Cr',
+    '₹40L–₹55L',
+    '₹75L–₹95L',
+    '₹1.2Cr–₹1.5Cr',
+    '₹1.4Cr–₹2.0Cr',
+    '₹2.5Cr+',
   ];
   const languages = ['English', 'Hindi', 'Bengali'];
   const purposes = ['Investment', 'Staying'];

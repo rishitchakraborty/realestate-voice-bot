@@ -62,7 +62,7 @@ export function CustomerCallAnalytics() {
               Customer call analytics
             </h1>
             <p className="mt-1 text-xs text-slate-500">
-              Priya — Alcove Realty outbound voice bot ·{" "}
+              Riya — Novesta Group outbound voice bot ·{" "}
               <span className="font-semibold text-slate-700">
                 Powered by QuarkGen AI
               </span>
@@ -149,7 +149,7 @@ export function CustomerCallAnalytics() {
           <div className="text-xs text-slate-500 lg:max-w-md lg:text-right">
             Field names and disposition set below follow the{" "}
             <em className="font-semibold text-slate-700 not-italic">
-              Alcove Call Analytics
+              Novesta Call Analytics
             </em>{" "}
             brief — every label maps 1:1 to a LeadProfile field or a defined disposition.
           </div>
