@@ -128,6 +128,12 @@
   --color-novesta-cream: #f8f6f0;
   --color-novesta-gold-subtle: #faf5ea;
   --color-novesta-slate: #334155;
+
+  --color-quark-blue: #0088cc;
+  --color-quark-cyan: #0ea5e9;
+  --color-quark-indigo: #6366f1;
+  --color-quark-purple: #a855f7;
+  --color-quark-glow: rgba(0, 136, 204, 0.16);
 }
 
 @keyframes ticker {

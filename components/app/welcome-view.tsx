@@ -40,21 +40,26 @@ export const WelcomeView = React.forwardRef<
       )}
       {...props}
     >
-      {/* Subtle Luxury Ambient Glow (No dots) */}
-      <div className="pointer-events-none absolute -top-40 right-1/4 h-[500px] w-[500px] rounded-full bg-[#c9a24c]/6 blur-[140px]" />
-      <div className="pointer-events-none absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-[#0e1230]/4 blur-[130px]" />
+      {/* Subtle Luxury Ambient Glow with QuarkGen Cyan & Novesta Gold */}
+      <div className="pointer-events-none absolute -top-40 right-1/4 h-[500px] w-[500px] rounded-full bg-[#0088cc]/5 blur-[150px]" />
+      <div className="pointer-events-none absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-[#c9a24c]/6 blur-[140px]" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center text-center">
         {/* Top Header Brand Badge */}
         <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#c9a24c]/30 bg-[#fbf7ee] px-4 py-1.5 text-xs font-semibold text-[#8b6508] shadow-xs">
             <Sparkles className="h-3.5 w-3.5 text-[#b8860b]" />
-            <span>Novesta Group • Premier Bungalows &amp; Plotted Communities</span>
+            <span>
+              Novesta Group • Premier Bungalows &amp; Plotted Communities
+            </span>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 shadow-xs">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>AI Voice Specialist Online</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-sky-200/90 bg-sky-50/70 px-3.5 py-1.5 text-xs font-medium text-sky-800 shadow-xs">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0088cc] opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0088cc]"></span>
+            </span>
+            <span>QuarkGen Voice AI Online</span>
           </div>
         </div>
 
@@ -83,7 +88,10 @@ export const WelcomeView = React.forwardRef<
 
         {/* Subtitle */}
         <p className="mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-slate-600">
-          Crafting legally vetted, high-appreciation plotted townships and bespoke luxury residences across Kolkata. Connect directly with our intelligent voice assistant for verified inventory, plot layouts, and VIP cab site visits.
+          Crafting legally vetted, high-appreciation plotted townships and
+          bespoke luxury residences across Kolkata. Connect directly with our
+          intelligent voice assistant for verified inventory, plot layouts, and
+          VIP cab site visits.
         </p>
 
         {/* Action Controls */}
@@ -91,29 +99,33 @@ export const WelcomeView = React.forwardRef<
           <Button
             size="lg"
             onClick={onStartCall}
-            className="group relative flex h-14 items-center gap-3.5 rounded-xl bg-[#0e1230] px-9 font-semibold text-white shadow-xl shadow-[#0e1230]/20 transition-all duration-300 hover:bg-[#16223d] hover:scale-102 hover:shadow-2xl hover:shadow-[#0e1230]/30 active:scale-98 cursor-pointer border border-[#1b2644]"
+            className="group relative flex h-14 items-center gap-3.5 rounded-xl bg-[#0e1230] px-9 font-semibold text-white shadow-xl shadow-[#0e1230]/20 transition-all duration-300 hover:bg-[#16223d] hover:scale-102 hover:border-sky-400 hover:shadow-2xl hover:shadow-[#0088cc]/25 active:scale-98 cursor-pointer border border-[#1b2644]"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#c9a24c] text-[#0e1230] shadow-sm transition-transform group-hover:scale-110">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#c9a24c] to-[#e0bc6a] text-[#0e1230] shadow-sm transition-transform group-hover:scale-110">
               <PhoneCall className="h-4 w-4" />
             </div>
             <div className="flex flex-col text-left">
               <span className="text-sm font-bold uppercase tracking-wider text-white">
                 {startButtonText || "Start Voice Consultation"}
               </span>
-              <span className="text-[10.5px] font-normal text-slate-300">
-                Instant connection • English, Hindi &amp; Bengali
+              <span className="text-[10.5px] font-normal text-slate-300 flex items-center gap-1.5">
+                <span>Instant connection</span>
+                <span className="text-sky-400">•</span>
+                <span className="text-sky-300 font-medium">
+                  QuarkGen Voice Engine
+                </span>
               </span>
             </div>
             <ArrowRight className="ml-1 h-4 w-4 text-[#c9a24c] transition-transform group-hover:translate-x-1" />
           </Button>
 
-          <a
+          {/* <a
             href="tel:+919147768032"
             className="inline-flex h-14 items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-6 text-xs font-semibold text-slate-800 shadow-xs transition-all hover:border-[#c9a24c] hover:bg-[#fbf7ee] hover:shadow-sm"
           >
             <Phone className="h-4 w-4 text-[#b8860b]" />
             <span>Direct Desk: +91 91477 68032</span>
-          </a>
+          </a> */}
         </div>
 
         {/* 4 CORE TRUST PILLARS (CLEAN & ELEGANT) */}
@@ -122,32 +134,48 @@ export const WelcomeView = React.forwardRef<
             <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fbf7ee] text-[#b8860b]">
               <Scale className="h-4 w-4" />
             </div>
-            <span className="text-xs font-bold text-[#0e1230]">100% Legal Clearance</span>
-            <span className="mt-0.5 text-[10.5px] text-slate-500">Mutation &amp; Conversion Ready</span>
+            <span className="text-xs font-bold text-[#0e1230]">
+              100% Legal Clearance
+            </span>
+            <span className="mt-0.5 text-[10.5px] text-slate-500">
+              Mutation &amp; Conversion Ready
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-2xs text-center transition-colors hover:border-[#c9a24c]/60">
             <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fbf7ee] text-[#b8860b]">
               <FileCheck className="h-4 w-4" />
             </div>
-            <span className="text-xs font-bold text-[#0e1230]">Undisputed Title</span>
-            <span className="mt-0.5 text-[10.5px] text-slate-500">Freehold Immediate Registry</span>
+            <span className="text-xs font-bold text-[#0e1230]">
+              Undisputed Title
+            </span>
+            <span className="mt-0.5 text-[10.5px] text-slate-500">
+              Freehold Immediate Registry
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-2xs text-center transition-colors hover:border-[#c9a24c]/60">
             <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fbf7ee] text-[#b8860b]">
               <CalendarCheck className="h-4 w-4" />
             </div>
-            <span className="text-xs font-bold text-[#0e1230]">Assured Timelines</span>
-            <span className="mt-0.5 text-[10.5px] text-slate-500">Guaranteed Handover</span>
+            <span className="text-xs font-bold text-[#0e1230]">
+              Assured Timelines
+            </span>
+            <span className="mt-0.5 text-[10.5px] text-slate-500">
+              Guaranteed Handover
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-2xs text-center transition-colors hover:border-[#c9a24c]/60">
             <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fbf7ee] text-[#b8860b]">
               <ShieldCheck className="h-4 w-4" />
             </div>
-            <span className="text-xs font-bold text-[#0e1230]">Complete Transparency</span>
-            <span className="mt-0.5 text-[10.5px] text-slate-500">Zero Hidden Surcharges</span>
+            <span className="text-xs font-bold text-[#0e1230]">
+              Complete Transparency
+            </span>
+            <span className="mt-0.5 text-[10.5px] text-slate-500">
+              Zero Hidden Surcharges
+            </span>
           </div>
         </div>
 
@@ -177,7 +205,8 @@ export const WelcomeView = React.forwardRef<
                   alt="Unicorn Aerocity"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/projects/unicorn-aerocity.png";
+                    (e.target as HTMLImageElement).src =
+                      "/projects/unicorn-aerocity.png";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
@@ -193,12 +222,15 @@ export const WelcomeView = React.forwardRef<
                   Unicorn Aerocity
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                  Airport-facing township along NH-12 runway. G+1 residential plots with high appreciation and fast VIP Road access.
+                  Airport-facing township along NH-12 runway. G+1 residential
+                  plots with high appreciation and fast VIP Road access.
                 </p>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-slate-100 px-1 pt-2.5 text-[11px] font-medium text-slate-500">
                 <span>1,000–4,000 Sq.Ft.</span>
-                <span className="font-semibold text-[#8b6508]">Upfront Registry</span>
+                <span className="font-semibold text-[#8b6508]">
+                  Upfront Registry
+                </span>
               </div>
             </div>
 
@@ -211,7 +243,8 @@ export const WelcomeView = React.forwardRef<
                   alt="Eco Smart City"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/projects/eco-smart-city.png";
+                    (e.target as HTMLImageElement).src =
+                      "/projects/eco-smart-city.png";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
@@ -227,12 +260,15 @@ export const WelcomeView = React.forwardRef<
                   Eco Smart City
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                  Sustainable living in Newtown Rajarhat with solar energy, smart water recycling, organic greens, and modern eco-villas.
+                  Sustainable living in Newtown Rajarhat with solar energy,
+                  smart water recycling, organic greens, and modern eco-villas.
                 </p>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-slate-100 px-1 pt-2.5 text-[11px] font-medium text-slate-500">
                 <span>Green Township</span>
-                <span className="font-semibold text-emerald-700">Action Area II</span>
+                <span className="font-semibold text-emerald-700">
+                  Action Area II
+                </span>
               </div>
             </div>
 
@@ -245,7 +281,8 @@ export const WelcomeView = React.forwardRef<
                   alt="Unicorn Riverside Resort"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/projects/unicorn-riverside-resort.jpg";
+                    (e.target as HTMLImageElement).src =
+                      "/projects/unicorn-riverside-resort.jpg";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
@@ -261,12 +298,15 @@ export const WelcomeView = React.forwardRef<
                   Unicorn Riverside Resort
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                  5-Star resort style residences right along the sacred river Ganges. High capital appreciation and vacation villa living.
+                  5-Star resort style residences right along the sacred river
+                  Ganges. High capital appreciation and vacation villa living.
                 </p>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-slate-100 px-1 pt-2.5 text-[11px] font-medium text-slate-500">
                 <span>Waterfront Living</span>
-                <span className="font-semibold text-blue-700">River Ganges</span>
+                <span className="font-semibold text-blue-700">
+                  River Ganges
+                </span>
               </div>
             </div>
 
@@ -295,12 +335,16 @@ export const WelcomeView = React.forwardRef<
                   The Art of the Bungalow
                 </h3>
                 <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                  Custom luxury bungalows and gated villa sanctuaries with freehold ownership, landscaped lawns, and full clubhouse access.
+                  Custom luxury bungalows and gated villa sanctuaries with
+                  freehold ownership, landscaped lawns, and full clubhouse
+                  access.
                 </p>
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-slate-100 px-1 pt-2.5 text-[11px] font-medium text-slate-500">
                 <span>3 &amp; 4 BHK Bungalows</span>
-                <span className="font-semibold text-[#8b6508]">100% Clear Title</span>
+                <span className="font-semibold text-[#8b6508]">
+                  100% Clear Title
+                </span>
               </div>
             </div>
           </div>
@@ -308,16 +352,21 @@ export const WelcomeView = React.forwardRef<
 
         {/* VOICE AI CAPABILITIES ROW */}
         <div className="mt-10 grid w-full grid-cols-1 gap-3.5 sm:grid-cols-3 text-left">
-          <div className="flex items-center gap-3.5 rounded-xl border border-slate-200/90 bg-white p-4 shadow-xs">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-700 border border-amber-200/80">
+          <div className="flex items-center gap-3.5 rounded-xl border border-sky-200/90 bg-gradient-to-br from-white to-sky-50/40 p-4 shadow-xs transition-all duration-300 hover:border-sky-400 hover:shadow-sm">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/30">
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-[#0e1230]">
-                Sub-200ms Conversational AI
-              </h4>
+              <div className="flex items-center gap-1.5">
+                <h4 className="text-xs font-bold text-[#0e1230]">
+                  Sub-200ms Conversational AI
+                </h4>
+                <span className="rounded bg-[#0088cc]/10 px-1.5 py-0.2 text-[9px] font-bold text-[#0077b6] border border-sky-200">
+                  QuarkGen
+                </span>
+              </div>
               <p className="mt-0.5 text-[11px] text-slate-500">
-                Real-time voice intelligence powered by QuarkGen Engine.
+                Ultra-low latency conversational engine with instant speech barge-in.
               </p>
             </div>
           </div>
@@ -371,8 +420,8 @@ export const WelcomeView = React.forwardRef<
           </a>
         </div>
 
-        <div className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-1.5 border border-slate-200">
-          <span className="text-[11px] font-medium text-slate-500">
+        <div className="flex items-center gap-2.5 rounded-xl bg-white px-3.5 py-1.5 border border-sky-200/80 shadow-[0_2px_10px_rgba(0,136,204,0.06)]">
+          <span className="text-[11px] font-medium text-slate-600">
             Powered by
           </span>
           {/* eslint-disable-next-line @next/next/no-img-element */}

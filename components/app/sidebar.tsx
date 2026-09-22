@@ -55,7 +55,7 @@ export function Sidebar({
             title="Live Voice Agent"
           >
             {activeTab === "live-call" && (
-              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-[#c9a24c]" />
+              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#c9a24c] via-[#0088cc] to-[#0ea5e9]" />
             )}
             <PhoneCall
               className={cn(
@@ -81,12 +81,12 @@ export function Sidebar({
             title="Call Analytics Dashboard"
           >
             {activeTab === "analytics" && (
-              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-[#c9a24c]" />
+              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#0088cc] to-[#6366f1]" />
             )}
             <BarChart2
               className={cn(
                 "h-5 w-5 transition-transform duration-200 group-hover:scale-110",
-                activeTab === "analytics" ? "text-[#c9a24c]" : "text-slate-500",
+                activeTab === "analytics" ? "text-[#0088cc]" : "text-slate-500",
               )}
             />
             <span className="mt-1.5 text-[10px] font-medium tracking-tight text-center leading-tight">
@@ -112,7 +112,7 @@ export function Sidebar({
           <span className="text-[7px] font-bold text-slate-500 uppercase tracking-wider">
             Powered By
           </span>
-          <div className="flex items-center justify-center rounded-lg bg-[#fdfbf7] border border-slate-200 p-1 w-full">
+          <div className="flex items-center justify-center rounded-lg bg-sky-50/50 border border-sky-200/80 p-1 w-full shadow-2xs">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/novesta-bot/quarkLogo.png"
