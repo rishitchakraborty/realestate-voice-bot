@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { TokenSource } from "livekit-client";
 import { useSession } from "@livekit/components-react";
 import { WarningIcon } from "@phosphor-icons/react/dist/ssr";
+import { AnimatePresence, motion } from "motion/react";
 import type { AppConfig } from "@/app-config";
 import { AgentSessionProvider } from "@/components/agents-ui/agent-session-provider";
 import { StartAudioButton } from "@/components/agents-ui/start-audio-button";
@@ -91,15 +92,39 @@ export function App({ appConfig }: AppProps) {
                 : "Novesta Group AI Voice Assistant"
             }
           />
-          {activeTab === "analytics" ? (
-            <div className="flex flex-1 flex-col overflow-y-auto">
-              <CustomerCallAnalytics />
-            </div>
-          ) : (
-            <main className="relative flex-1 overflow-hidden">
-              <ViewController appConfig={appConfig} />
-            </main>
-          )}
+          <div className="relative flex flex-1 flex-col overflow-hidden">
+            <AnimatePresence mode="wait" initial={false}>
+              {activeTab === "analytics" ? (
+                <motion.div
+                  key="analytics-tab"
+                  initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -6, filter: "blur(2px)" }}
+                  transition={{
+                    duration: 0.22,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="flex flex-1 flex-col overflow-y-auto"
+                >
+                  <CustomerCallAnalytics />
+                </motion.div>
+              ) : (
+                <motion.main
+                  key="live-call-tab"
+                  initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -6, filter: "blur(2px)" }}
+                  transition={{
+                    duration: 0.22,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="relative flex-1 overflow-hidden"
+                >
+                  <ViewController appConfig={appConfig} />
+                </motion.main>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
       <StartAudioButton label="Start Audio" />

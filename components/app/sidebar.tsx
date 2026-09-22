@@ -2,6 +2,7 @@
 
 import React from "react";
 import { PhoneCall, BarChart2, LogOut } from "lucide-react";
+import { motion } from "motion/react";
 import { cn } from "@/lib/shadcn/utils";
 
 interface SidebarProps {
@@ -17,6 +18,23 @@ export function Sidebar({
   logoUrl = "/novesta-bot/novesta/white-logo.png",
   className,
 }: SidebarProps) {
+  const navItems = [
+    {
+      id: "live-call",
+      label: "Live Call",
+      icon: PhoneCall,
+      iconColorActive: "text-[#c9a24c]",
+      gradient: "from-[#c9a24c] via-[#0088cc] to-[#0ea5e9]",
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: BarChart2,
+      iconColorActive: "text-[#0088cc]",
+      gradient: "from-[#0088cc] to-[#6366f1]",
+    },
+  ];
+
   return (
     <aside
       className={cn(
@@ -27,10 +45,10 @@ export function Sidebar({
       {/* Top: Brand Logo / Icon */}
       <div>
         <div className="flex h-16 w-full shrink-0 items-center justify-center border-b border-slate-200 px-2">
-          <div className="flex h-11 w-full items-center justify-center rounded-xl bg-[#0e1230] p-1.5 transition-transform hover:scale-105 border border-[#c9a24c]/30 shadow-xs">
+          <div className="flex h-11 w-full items-center justify-center rounded-xl bg-[#0e1230] p-1.5 transition-transform duration-200 hover:scale-105 border border-[#c9a24c]/30 shadow-xs">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/novesta-bot/novesta/white-logo.png"
+              src={logoUrl}
               alt="Novesta Logo"
               className="h-6 w-auto max-h-full max-w-full object-contain"
               onError={(e) => {
@@ -42,57 +60,76 @@ export function Sidebar({
 
         {/* Navigation Menu */}
         <nav className="flex flex-col items-center gap-2.5 px-2 pt-4">
-          {/* 1. Live Call Button */}
-          <button
-            type="button"
-            onClick={() => onTabChange?.("live-call")}
-            className={cn(
-              "group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 transition-all duration-200 cursor-pointer",
-              activeTab === "live-call"
-                ? "bg-[#0e1230] text-white font-semibold shadow-md shadow-[#0e1230]/20"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900",
-            )}
-            title="Live Voice Agent"
-          >
-            {activeTab === "live-call" && (
-              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#c9a24c] via-[#0088cc] to-[#0ea5e9]" />
-            )}
-            <PhoneCall
-              className={cn(
-                "h-5 w-5 transition-transform duration-200 group-hover:scale-110",
-                activeTab === "live-call" ? "text-[#c9a24c]" : "text-slate-500",
-              )}
-            />
-            <span className="mt-1.5 text-[10px] font-medium tracking-tight text-center leading-tight">
-              Live Call
-            </span>
-          </button>
+          {navItems.map((item) => {
+            const isActive = activeTab === item.id;
+            const Icon = item.icon;
 
-          {/* 2. Analytics Button */}
-          <button
-            type="button"
-            onClick={() => onTabChange?.("analytics")}
-            className={cn(
-              "group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 transition-all duration-200 cursor-pointer",
-              activeTab === "analytics"
-                ? "bg-[#0e1230] text-white font-semibold shadow-md shadow-[#0e1230]/20"
-                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900",
-            )}
-            title="Call Analytics Dashboard"
-          >
-            {activeTab === "analytics" && (
-              <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b from-[#0088cc] to-[#6366f1]" />
-            )}
-            <BarChart2
-              className={cn(
-                "h-5 w-5 transition-transform duration-200 group-hover:scale-110",
-                activeTab === "analytics" ? "text-[#0088cc]" : "text-slate-500",
-              )}
-            />
-            <span className="mt-1.5 text-[10px] font-medium tracking-tight text-center leading-tight">
-              Analytics
-            </span>
-          </button>
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onTabChange?.(item.id)}
+                className="group relative flex w-full flex-col items-center justify-center rounded-xl p-2.5 cursor-pointer select-none"
+                title={item.label}
+              >
+                {/* Smooth Animated Active Background Pill */}
+                {isActive && (
+                  <motion.div
+                    layoutId="sidebarActivePill"
+                    className="absolute inset-0 rounded-xl bg-[#0e1230] shadow-md shadow-[#0e1230]/20 border border-[#c9a24c]/30"
+                    transition={{
+                      type: "spring",
+                      stiffness: 450,
+                      damping: 34,
+                    }}
+                  />
+                )}
+
+                {/* Smooth Animated Left Accent Indicator */}
+                {isActive && (
+                  <motion.span
+                    layoutId="sidebarActiveIndicator"
+                    className={cn(
+                      "absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-r-full bg-gradient-to-b z-20",
+                      item.gradient,
+                    )}
+                    transition={{
+                      type: "spring",
+                      stiffness: 450,
+                      damping: 34,
+                    }}
+                  />
+                )}
+
+                {/* Hover Background when not active */}
+                {!isActive && (
+                  <span className="absolute inset-0 rounded-xl transition-colors duration-150 group-hover:bg-slate-100/90" />
+                )}
+
+                {/* Button Content */}
+                <div className="relative z-10 flex flex-col items-center justify-center">
+                  <Icon
+                    className={cn(
+                      "h-5 w-5 transition-transform duration-200 group-hover:scale-110",
+                      isActive
+                        ? item.iconColorActive
+                        : "text-slate-500 group-hover:text-slate-900",
+                    )}
+                  />
+                  <span
+                    className={cn(
+                      "mt-1.5 text-[10px] font-medium tracking-tight text-center leading-tight transition-colors duration-150",
+                      isActive
+                        ? "text-white font-semibold"
+                        : "text-slate-500 group-hover:text-slate-900",
+                    )}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
         </nav>
       </div>
 
