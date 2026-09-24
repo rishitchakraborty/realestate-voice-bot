@@ -34,30 +34,30 @@ export function BotFlowCardSelector({
 }: BotFlowCardSelectorProps) {
   return (
     <div
-      className={cn("w-full max-w-5xl mx-auto flex flex-col gap-3.5", className)}
+      className={cn("w-full max-w-4xl mx-auto flex flex-col gap-2", className)}
     >
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-left px-1">
-        <div className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center rounded-md bg-[#0e1230] text-amber-400">
-            <Bot className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-1.5">
+          <div className="flex h-4.5 w-4.5 items-center justify-center rounded bg-[#0e1230] text-amber-400">
+            <Bot className="h-3 w-3" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#0e1230]">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[#0e1230]">
             Select AI Voice Assistant
           </span>
-          <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-semibold text-slate-600">
-            {BOT_FLOWS.length} Specialized Agents
+          <span className="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.2 text-[9.5px] font-semibold text-slate-600">
+            {BOT_FLOWS.length} Specialized Flows
           </span>
         </div>
-        <span className="text-[11px] text-slate-500">
-          Choose a conversation flow below to begin your consultation
+        <span className="text-[10.5px] text-slate-500">
+          Choose a conversation flow below to begin
         </span>
       </div>
 
-      {/* Grid of Bot Cards (Both cards equal size & spacious) */}
+      {/* Grid of Bot Cards (Both cards equal size & compact) */}
       <div
         className={cn(
-          "grid gap-4 sm:gap-5 items-stretch",
+          "grid gap-3 items-stretch",
           BOT_FLOWS.length === 1
             ? "grid-cols-1"
             : BOT_FLOWS.length === 2
@@ -90,34 +90,34 @@ export function BotFlowCardSelector({
                   ? {
                       borderColor: bot.accentColor,
                       backgroundColor: `${bot.accentColor}0a`,
-                      boxShadow: `0 12px 30px -6px ${bot.accentColor}25`,
+                      boxShadow: `0 8px 24px -4px ${bot.accentColor}25`,
                     }
                   : undefined
               }
               className={cn(
-                "group relative flex h-full flex-col justify-between rounded-2xl p-5 sm:p-6 text-left transition-all duration-300 cursor-pointer border select-none outline-none",
+                "group relative flex h-full flex-col justify-between rounded-xl p-3.5 sm:p-4 text-left transition-all duration-300 cursor-pointer border select-none outline-none",
                 isSelected
-                  ? "ring-2 ring-offset-2 ring-slate-900/10 border-transparent"
+                  ? "ring-2 ring-offset-1 ring-slate-900/10 border-transparent"
                   : "bg-white/95 border-slate-200/90 shadow-2xs hover:border-slate-300 hover:shadow-md hover:bg-white",
               )}
             >
               {/* Card Body */}
               <div className="flex flex-col">
                 {/* Header: Icon, Badge, Title, Radio */}
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-start justify-between gap-2.5">
+                  <div className="flex items-center gap-2.5">
                     <div
                       className={cn(
-                        "flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-xs transition-transform group-hover:scale-105 shrink-0 bg-gradient-to-br",
+                        "flex h-9 w-9 items-center justify-center rounded-lg text-white shadow-2xs transition-transform group-hover:scale-105 shrink-0 bg-gradient-to-br",
                         bot.accentGradient,
                       )}
                     >
-                      <BotIcon icon={bot.icon} className="h-5 w-5 text-white" />
+                      <BotIcon icon={bot.icon} className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span
-                          className="inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+                          className="inline-flex items-center rounded-md px-1.5 py-0.2 text-[9px] font-bold uppercase tracking-wider"
                           style={{
                             backgroundColor: `${bot.accentColor}18`,
                             color: bot.accentColor,
@@ -127,7 +127,7 @@ export function BotFlowCardSelector({
                           {bot.badge}
                         </span>
                       </div>
-                      <h4 className="mt-1 text-base font-bold text-slate-900 leading-snug">
+                      <h4 className="mt-0.5 text-sm font-bold text-slate-900 leading-snug">
                         {bot.shortName}
                       </h4>
                     </div>
@@ -137,35 +137,35 @@ export function BotFlowCardSelector({
                   <div className="pt-0.5 shrink-0">
                     {isSelected ? (
                       <div
-                        className="flex h-5 w-5 items-center justify-center rounded-full text-white shadow-xs"
+                        className="flex h-4.5 w-4.5 items-center justify-center rounded-full text-white shadow-xs"
                         style={{ backgroundColor: bot.accentColor }}
                       >
-                        <CheckCircle2 className="h-4 w-4" />
+                        <CheckCircle2 className="h-3.5 w-3.5" />
                       </div>
                     ) : (
-                      <div className="h-5 w-5 rounded-full border-2 border-slate-300 group-hover:border-slate-400" />
+                      <div className="h-4.5 w-4.5 rounded-full border-2 border-slate-300 group-hover:border-slate-400" />
                     )}
                   </div>
                 </div>
 
                 {/* Subtitle / Purpose */}
-                <p className="mt-3 text-xs leading-relaxed text-slate-600 font-normal">
+                <p className="mt-1.5 text-[11px] leading-relaxed text-slate-600 font-normal">
                   {bot.description}
                 </p>
 
                 {/* Features Checklist: What the bot will do */}
-                <div className="mt-4 border-t border-slate-100 pt-3.5">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                <div className="mt-2.5 border-t border-slate-100 pt-2">
+                  <span className="text-[9.5px] font-bold uppercase tracking-wider text-slate-400">
                     What this agent will do:
                   </span>
-                  <ul className="mt-2.5 space-y-2">
+                  <ul className="mt-1.5 space-y-1">
                     {bot.features.map((feat) => (
                       <li
                         key={feat}
-                        className="flex items-start gap-2.5 text-xs text-slate-700 leading-snug"
+                        className="flex items-start gap-2 text-[11px] text-slate-700 leading-tight"
                       >
                         <CheckCircle2
-                          className="h-4 w-4 shrink-0 mt-0.5"
+                          className="h-3.5 w-3.5 shrink-0 mt-0.5"
                           style={{ color: bot.accentColor }}
                         />
                         <span>{feat}</span>
@@ -176,12 +176,12 @@ export function BotFlowCardSelector({
               </div>
 
               {/* Bottom Tag Bar & Active Indicator */}
-              <div className="mt-5 flex items-center justify-between pt-3 border-t border-slate-100/90">
-                <div className="flex flex-wrap gap-1.5">
+              <div className="mt-3 flex items-center justify-between pt-2 border-t border-slate-100/90">
+                <div className="flex flex-wrap gap-1">
                   {bot.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[9.5px] font-medium px-2 py-0.5 rounded-md"
+                      className="text-[9px] font-medium px-1.5 py-0.2 rounded-md"
                       style={
                         isSelected
                           ? {
@@ -199,14 +199,14 @@ export function BotFlowCardSelector({
                   ))}
                 </div>
 
-                <div className="flex items-center text-xs font-semibold shrink-0 ml-2">
+                <div className="flex items-center text-[10.5px] font-semibold shrink-0 ml-1.5">
                   {isSelected ? (
                     <span
                       className="inline-flex items-center gap-1 font-bold"
                       style={{ color: bot.accentColor }}
                     >
                       <span>Active Flow</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-3 w-3" />
                     </span>
                   ) : (
                     <span className="text-slate-400 group-hover:text-slate-700 transition-colors">

@@ -55,7 +55,7 @@ export const BOTS: BotConfig[] = [
   {
     id: "call-flow-2",
     name: "Call Flow 2 — Site Visit Confirmation",
-    shortName: "Site Visit Confirmation",
+    shortName: "Site Visit Confirmation Followup",
     agentName: BOT_2_AGENT_NAME,
     badge: "Site Visit Followup",
     subtitle: "Site Visit Scheduling",

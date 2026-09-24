@@ -69,7 +69,7 @@ export const WelcomeView = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "relative flex h-full w-full flex-col justify-start overflow-y-auto bg-gradient-to-b from-white via-[#faf9f6] to-white px-4 py-8 text-slate-900 md:px-8 md:py-10",
+          "relative flex h-full w-full flex-col justify-start overflow-y-auto bg-gradient-to-b from-white via-[#faf9f6] to-white px-4 py-3.5 text-slate-900 md:px-6 md:py-5",
           className,
         )}
         {...props}
@@ -78,17 +78,15 @@ export const WelcomeView = React.forwardRef<
         <div className="pointer-events-none absolute -top-40 right-1/4 h-[500px] w-[500px] rounded-full bg-[#0088cc]/5 blur-[150px]" />
         <div className="pointer-events-none absolute top-1/3 -left-40 h-[450px] w-[450px] rounded-full bg-[#c9a24c]/6 blur-[140px]" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center text-center">
+        <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center text-center">
           {/* Top Header Brand Badge */}
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#c9a24c]/30 bg-[#fbf7ee] px-4 py-1.5 text-xs font-semibold text-[#8b6508] shadow-xs">
-              <Sparkles className="h-3.5 w-3.5 text-[#b8860b]" />
-              <span>
-                Novesta Group • Premier Bungalows &amp; Plotted Communities
-              </span>
+          <div className="mb-2 flex flex-wrap items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#c9a24c]/30 bg-[#fbf7ee] px-3 py-1 text-[11px] font-semibold text-[#8b6508] shadow-xs">
+              <Sparkles className="h-3 w-3 text-[#b8860b]" />
+              <span>Novesta Group • Premier Bungalows &amp; Plotted Communities</span>
             </div>
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-sky-200/90 bg-sky-50/70 px-3.5 py-1.5 text-xs font-medium text-sky-800 shadow-xs">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-sky-200/90 bg-sky-50/70 px-3 py-1 text-[11px] font-medium text-sky-800 shadow-xs">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0088cc] opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[#0088cc]"></span>
@@ -98,13 +96,13 @@ export const WelcomeView = React.forwardRef<
           </div>
 
           {/* Official Novesta Logo Card */}
-          <div className="mb-6 flex items-center justify-center">
-            <div className="inline-flex items-center justify-center rounded-2xl bg-[#0e1230] px-7 py-3.5 shadow-lg shadow-[#0e1230]/10 border border-[#c9a24c]/30">
+          <div className="mb-2.5 flex items-center justify-center">
+            <div className="inline-flex items-center justify-center rounded-xl bg-[#0e1230] px-5 py-2 shadow-md shadow-[#0e1230]/10 border border-[#c9a24c]/30">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/novesta-bot/novesta/white-logo.png"
                 alt="Novesta Group"
-                className="h-9 w-auto object-contain sm:h-11"
+                className="h-7 w-auto object-contain sm:h-8"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
                     "/novesta/white-logo.png";
@@ -114,7 +112,7 @@ export const WelcomeView = React.forwardRef<
           </div>
 
           {/* Main Headline */}
-          <h1 className="max-w-4xl font-serif text-3xl font-extrabold tracking-tight text-[#0e1230] sm:text-5xl md:text-6xl leading-[1.15]">
+          <h1 className="max-w-3xl font-serif text-2xl font-extrabold tracking-tight text-[#0e1230] sm:text-3xl md:text-4xl leading-tight">
             The Art of the Bungalow &amp;{" "}
             <span className="bg-gradient-to-r from-[#996515] via-[#c9a24c] to-[#7a5203] bg-clip-text text-transparent">
               Residential Plots
@@ -122,16 +120,13 @@ export const WelcomeView = React.forwardRef<
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-4 max-w-2xl text-sm md:text-base leading-relaxed text-slate-600">
-            Crafting legally vetted, high-appreciation plotted townships and
-            bespoke luxury residences across Kolkata. Connect directly with our
-            intelligent voice assistant for verified inventory, plot layouts,
-            and VIP cab site visits.
+          <p className="mt-1.5 max-w-xl text-xs md:text-sm leading-relaxed text-slate-600">
+            Crafting legally vetted, high-appreciation plotted townships and luxury residences across Kolkata. Connect directly with our voice assistant for verified inventory and site visits.
           </p>
 
           {/* Interactive Bot Flow Selector Card Grid */}
           {onSelectBot && (
-            <div className="mt-8 w-full">
+            <div className="mt-3.5 w-full">
               <BotFlowCardSelector
                 selectedBot={selectedBot}
                 onSelectBot={handleBotSelect}
@@ -142,41 +137,41 @@ export const WelcomeView = React.forwardRef<
           {/* Action Controls & Bot Quick Dropdown */}
           <div
             ref={startBtnRef}
-            className="mt-7 flex flex-col items-center justify-center gap-3 w-full max-w-xl"
+            className="mt-3.5 flex flex-col items-center justify-center gap-2.5 w-full max-w-2xl"
           >
             <Button
               size="lg"
               onClick={onStartCall}
               style={{
                 borderColor: `${selectedBot.accentColor}60`,
-                boxShadow: `0 10px 30px -5px ${selectedBot.accentColor}30`,
+                boxShadow: `0 8px 24px -4px ${selectedBot.accentColor}30`,
               }}
-              className="group relative flex h-15 w-full items-center justify-between rounded-2xl px-6 font-semibold text-white shadow-xl transition-all duration-300 hover:scale-101 active:scale-99 cursor-pointer border bg-[#0e1230] hover:bg-[#141a3e]"
+              className="group relative flex h-auto min-h-[52px] py-2 w-full items-center justify-between rounded-xl px-4 sm:px-5 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-101 active:scale-99 cursor-pointer border bg-[#0e1230] hover:bg-[#141a3e]"
             >
-              <div className="flex items-center gap-3.5">
+              <div className="flex items-center gap-3 min-w-0 flex-1 mr-2">
                 <div
                   className={cn(
-                    "flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md transition-transform group-hover:scale-110 bg-gradient-to-br",
+                    "flex h-8.5 w-8.5 items-center justify-center rounded-lg text-white shadow-xs transition-transform group-hover:scale-110 shrink-0 bg-gradient-to-br",
                     selectedBot.accentGradient,
                   )}
                 >
                   {selectedBot.icon === "calendar" ? (
-                    <CalendarCheck className="h-5 w-5" />
+                    <CalendarCheck className="h-4.5 w-4.5" />
                   ) : selectedBot.icon === "bot" ? (
-                    <Bot className="h-5 w-5" />
+                    <Bot className="h-4.5 w-4.5" />
                   ) : selectedBot.icon === "sparkles" ? (
-                    <Sparkles className="h-5 w-5" />
+                    <Sparkles className="h-4.5 w-4.5" />
                   ) : (
-                    <PhoneCall className="h-5 w-5" />
+                    <PhoneCall className="h-4.5 w-4.5" />
                   )}
                 </div>
-                <div className="flex flex-col text-left">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold uppercase tracking-wider text-white">
+                <div className="flex flex-col text-left min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-sm font-bold uppercase tracking-wider text-white truncate">
                       Start {selectedBot.shortName}
                     </span>
                     <span
-                      className="rounded-full px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+                      className="rounded-full px-2 py-0.2 text-[8.5px] font-bold uppercase tracking-wider shrink-0"
                       style={{
                         backgroundColor: `${selectedBot.accentColor}25`,
                         color: "#ffffff",
@@ -186,24 +181,24 @@ export const WelcomeView = React.forwardRef<
                       {selectedBot.badge}
                     </span>
                   </div>
-                  <span className="text-[11px] font-normal text-slate-300 flex items-center gap-1.5">
-                    <span className="text-sky-300 font-medium">
+                  <span className="text-[10.5px] font-normal text-slate-300 flex items-center gap-1.5 truncate">
+                    <span className="text-sky-300 font-medium shrink-0">
                       Instant Voice Consultation
                     </span>
-                    <span className="text-sky-400">•</span>
-                    <span className="text-slate-300">
+                    <span className="text-sky-400 shrink-0">•</span>
+                    <span className="text-slate-300 truncate">
                       {selectedBot.subtitle}
                     </span>
                   </span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pl-2">
+              <div className="flex items-center pl-1 shrink-0">
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-white transition-transform group-hover:translate-x-1"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 text-white transition-transform group-hover:translate-x-1"
                   style={{ color: selectedBot.accentColor }}
                 >
-                  <ArrowRight className="h-4 w-4 text-white" />
+                  <ArrowRight className="h-3.5 w-3.5 text-white" />
                 </div>
               </div>
             </Button>
