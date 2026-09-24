@@ -20,17 +20,23 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/shadcn/utils";
+import { BOTS as BOT_FLOWS, DEFAULT_BOT, type BotConfig as BotFlow } from "@/constants/bots";
+import { BotFlowCardSelector } from "@/components/app/bot-flow-card-selector";
+import { BotSelectorDropdown } from "@/components/app/bot-selector-dropdown";
 
 interface WelcomeViewProps {
   startButtonText: string;
   onStartCall: () => void;
+  selectedBot?: BotFlow;
+  onSelectBot?: (bot: BotFlow) => void;
   ref?: React.Ref<HTMLDivElement>;
 }
 
 export const WelcomeView = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & WelcomeViewProps
->(({ startButtonText, onStartCall, className, ...props }, ref) => {
+>(({ startButtonText, onStartCall, selectedBot = DEFAULT_BOT, onSelectBot, className, ...props }, ref) => {
+  const isFlow1 = selectedBot.flowNumber === "1";
   return (
     <div
       ref={ref}
@@ -94,38 +100,87 @@ export const WelcomeView = React.forwardRef<
           VIP cab site visits.
         </p>
 
-        {/* Action Controls */}
-        <div className="mt-8 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+        {/* Interactive Bot Flow Selector Card Grid */}
+        {onSelectBot && (
+          <div className="mt-8 w-full">
+            <BotFlowCardSelector
+              selectedBot={selectedBot}
+              onSelectBot={onSelectBot}
+            />
+          </div>
+        )}
+
+        {/* Action Controls & Bot Quick Dropdown */}
+        <div className="mt-7 flex flex-col items-center justify-center gap-3 w-full max-w-xl">
           <Button
             size="lg"
             onClick={onStartCall}
-            className="group relative flex h-14 items-center gap-3.5 rounded-xl bg-[#0e1230] px-9 font-semibold text-white shadow-xl shadow-[#0e1230]/20 transition-all duration-300 hover:bg-[#16223d] hover:scale-102 hover:border-sky-400 hover:shadow-2xl hover:shadow-[#0088cc]/25 active:scale-98 cursor-pointer border border-[#1b2644]"
+            className={cn(
+              "group relative flex h-15 w-full items-center justify-between rounded-2xl px-6 font-semibold text-white shadow-xl transition-all duration-300 hover:scale-101 active:scale-99 cursor-pointer border",
+              isFlow1
+                ? "bg-[#0e1230] hover:bg-[#151c45] border-[#c9a24c]/40 shadow-[#0e1230]/25 hover:shadow-[#c9a24c]/20"
+                : "bg-[#0a192f] hover:bg-[#0f2444] border-sky-400/40 shadow-[#0a192f]/25 hover:shadow-sky-400/20"
+            )}
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#c9a24c] to-[#e0bc6a] text-[#0e1230] shadow-sm transition-transform group-hover:scale-110">
-              <PhoneCall className="h-4 w-4" />
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-sm font-bold uppercase tracking-wider text-white">
-                {startButtonText || "Start Voice Consultation"}
-              </span>
-              <span className="text-[10.5px] font-normal text-slate-300 flex items-center gap-1.5">
-                <span>Instant connection</span>
-                <span className="text-sky-400">•</span>
-                <span className="text-sky-300 font-medium">
-                  QuarkGen Voice Engine
+            <div className="flex items-center gap-3.5">
+              <div
+                className={cn(
+                  "flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md transition-transform group-hover:scale-110",
+                  isFlow1
+                    ? "bg-gradient-to-br from-[#c9a24c] to-[#996515]"
+                    : "bg-gradient-to-br from-[#0088cc] to-[#0369a1]"
+                )}
+              >
+                {isFlow1 ? (
+                  <PhoneCall className="h-5 w-5" />
+                ) : (
+                  <CalendarCheck className="h-5 w-5" />
+                )}
+              </div>
+              <div className="flex flex-col text-left">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold uppercase tracking-wider text-white">
+                    Start {selectedBot.shortName}
+                  </span>
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-0.2 text-[9px] font-bold uppercase tracking-wider",
+                      isFlow1
+                        ? "bg-[#c9a24c]/25 text-amber-300 border border-[#c9a24c]/40"
+                        : "bg-sky-400/25 text-sky-200 border border-sky-400/40"
+                    )}
+                  >
+                    Flow {selectedBot.flowNumber}
+                  </span>
+                </div>
+                <span className="text-[11px] font-normal text-slate-300 flex items-center gap-1.5">
+                  <span className="text-slate-400 font-mono">Agent: {selectedBot.agentName}</span>
+                  <span className="text-sky-400">•</span>
+                  <span className="text-sky-300 font-medium">Instant Voice Dispatch</span>
                 </span>
-              </span>
+              </div>
             </div>
-            <ArrowRight className="ml-1 h-4 w-4 text-[#c9a24c] transition-transform group-hover:translate-x-1" />
+
+            <div className="flex items-center gap-2 pl-2">
+              <div
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-lg transition-transform group-hover:translate-x-1",
+                  isFlow1 ? "bg-white/10 text-amber-300" : "bg-white/10 text-sky-300"
+                )}
+              >
+                <ArrowRight className="h-4 w-4" />
+              </div>
+            </div>
           </Button>
 
-          {/* <a
-            href="tel:+919147768032"
-            className="inline-flex h-14 items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-6 text-xs font-semibold text-slate-800 shadow-xs transition-all hover:border-[#c9a24c] hover:bg-[#fbf7ee] hover:shadow-sm"
-          >
-            <Phone className="h-4 w-4 text-[#b8860b]" />
-            <span>Direct Desk: +91 91477 68032</span>
-          </a> */}
+          {/* Micro status line */}
+          <div className="flex items-center gap-2 text-[11px] text-slate-600">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
+            </span>
+            <span>Connecting to LiveKit room with {selectedBot.shortName}</span>
+          </div>
         </div>
 
         {/* 4 CORE TRUST PILLARS (CLEAN & ELEGANT) */}

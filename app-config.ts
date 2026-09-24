@@ -21,6 +21,8 @@ export interface AppConfig {
   sandboxId?: string;
 }
 
+import { DEFAULT_BOT } from "@/constants/bots";
+
 export const APP_CONFIG_DEFAULTS: AppConfig = {
   companyName: "Novesta Group",
   pageTitle: "Novesta Group | AI Voice Assistant - Residential Plots & Luxury Bungalows",
@@ -38,8 +40,8 @@ export const APP_CONFIG_DEFAULTS: AppConfig = {
   accentDark: "#c9a24c",
   startButtonText: "Start Voice Consultation",
 
-  // agent dispatch configuration
-  agentName: process.env.AGENT_NAME ?? undefined,
+  // agent dispatch configuration - defined purely as constant
+  agentName: DEFAULT_BOT.agentName,
 
   // LiveKit Cloud Sandbox configuration
   sandboxId: undefined,

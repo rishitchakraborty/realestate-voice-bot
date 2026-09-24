@@ -16,6 +16,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { useAgentErrors } from "@/hooks/useAgentErrors";
 import { useDebugMode } from "@/hooks/useDebug";
 import { getSandboxTokenSource } from "@/lib/utils";
+import {
+  DEFAULT_BOT_ID,
+  getBotConfig,
+  type BotConfig as BotFlow,
+} from "@/constants/bots";
 
 const IN_DEVELOPMENT = process.env.NODE_ENV !== "production";
 
@@ -32,8 +37,9 @@ interface AppProps {
 
 export function App({ appConfig }: AppProps) {
   const [activeTab, setActiveTab] = useState<string>("live-call");
+  const [selectedBotId, setSelectedBotId] = useState<string>(DEFAULT_BOT_ID);
 
-  // Restore persisted tab on mount from URL or localStorage
+  // Restore persisted tab and selected bot on mount from URL or localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -43,6 +49,14 @@ export function App({ appConfig }: AppProps) {
       const selected = urlTab || storedTab || "live-call";
       if (selected === "live-call" || selected === "analytics") {
         setActiveTab(selected);
+      }
+
+      const urlBot = params.get("bot") || params.get("flow");
+      const storedBot = localStorage.getItem("novesta_selected_bot");
+      const targetBot = urlBot || storedBot || DEFAULT_BOT_ID;
+      const matched = getBotConfig(targetBot);
+      if (matched) {
+        setSelectedBotId(matched.id);
       }
     } catch {
       // Ignore localStorage access errors if any
@@ -63,71 +77,54 @@ export function App({ appConfig }: AppProps) {
     }
   };
 
-  const tokenSource = useMemo(() => {
-    return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
-      ? getSandboxTokenSource(appConfig)
-      : TokenSource.endpoint("/novesta-bot/api/connection-details");
-  }, [appConfig]);
+  const handleSelectBot = (bot: BotFlow) => {
+    setSelectedBotId(bot.id);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("novesta_selected_bot", bot.id);
+        const url = new URL(window.location.href);
+        url.searchParams.set("bot", bot.id);
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Ignore storage or history errors if any
+      }
+    }
+  };
 
-  const session = useSession(
-    tokenSource,
-    appConfig.agentName ? { agentName: appConfig.agentName } : undefined,
+  const selectedBot = useMemo(
+    () => getBotConfig(selectedBotId),
+    [selectedBotId]
   );
 
   return (
-    <AgentSessionProvider session={session}>
-      <AppSetup />
-      <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
-        <Sidebar
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          logoUrl="/novesta-bot/novesta/white-logo.png"
-        />
+    <div className="flex h-svh w-svw flex-row overflow-hidden bg-background">
+      <Sidebar
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+        logoUrl="/novesta-bot/novesta/white-logo.png"
+      />
 
-        <div className="flex flex-1 flex-col overflow-hidden">
-          <Header
-            title={
-              activeTab === "analytics"
-                ? "Novesta Group Call Analytics"
-                : "Novesta Group AI Voice Assistant"
-            }
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {activeTab === "analytics" ? (
+          <>
+            <Header
+              title="Novesta Group Call Analytics"
+              showBotSelector={false}
+            />
+            <div className="relative flex flex-1 flex-col overflow-y-auto">
+              <CustomerCallAnalytics />
+            </div>
+          </>
+        ) : (
+          <LiveCallSession
+            key={selectedBot.id}
+            appConfig={appConfig}
+            selectedBot={selectedBot}
+            onSelectBot={handleSelectBot}
           />
-          <div className="relative flex flex-1 flex-col overflow-hidden">
-            <AnimatePresence mode="wait" initial={false}>
-              {activeTab === "analytics" ? (
-                <motion.div
-                  key="analytics-tab"
-                  initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -6, filter: "blur(2px)" }}
-                  transition={{
-                    duration: 0.22,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="flex flex-1 flex-col overflow-y-auto"
-                >
-                  <CustomerCallAnalytics />
-                </motion.div>
-              ) : (
-                <motion.main
-                  key="live-call-tab"
-                  initial={{ opacity: 0, y: 8, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -6, filter: "blur(2px)" }}
-                  transition={{
-                    duration: 0.22,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="relative flex-1 overflow-hidden"
-                >
-                  <ViewController appConfig={appConfig} />
-                </motion.main>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
+        )}
       </div>
-      <StartAudioButton label="Start Audio" />
+
       <Toaster
         icons={{
           warning: <WarningIcon weight="bold" />,
@@ -142,6 +139,53 @@ export function App({ appConfig }: AppProps) {
           } as React.CSSProperties
         }
       />
+    </div>
+  );
+}
+
+interface LiveCallSessionProps {
+  appConfig: AppConfig;
+  selectedBot: BotFlow;
+  onSelectBot: (bot: BotFlow) => void;
+}
+
+function LiveCallSession({
+  appConfig,
+  selectedBot,
+  onSelectBot,
+}: LiveCallSessionProps) {
+  const tokenSource = useMemo(() => {
+    return typeof process.env.NEXT_PUBLIC_CONN_DETAILS_ENDPOINT === "string"
+      ? getSandboxTokenSource({
+          ...appConfig,
+          agentName: selectedBot.agentName,
+        })
+      : TokenSource.endpoint("/novesta-bot/api/connection-details");
+  }, [appConfig, selectedBot.agentName]);
+
+  const session = useSession(
+    tokenSource,
+    selectedBot.agentName ? { agentName: selectedBot.agentName } : undefined
+  );
+
+  return (
+    <AgentSessionProvider session={session}>
+      <AppSetup />
+      <Header
+        title="Novesta Group AI Voice Assistant"
+        selectedBot={selectedBot}
+        onSelectBot={onSelectBot}
+        isConnected={session.isConnected}
+        showBotSelector={true}
+      />
+      <main className="relative flex-1 overflow-hidden">
+        <ViewController
+          appConfig={{ ...appConfig, agentName: selectedBot.agentName }}
+          selectedBot={selectedBot}
+          onSelectBot={onSelectBot}
+        />
+      </main>
+      <StartAudioButton label="Start Audio" />
     </AgentSessionProvider>
   );
 }

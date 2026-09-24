@@ -10,7 +10,7 @@ const MotionWelcomeView = motion.create(WelcomeView);
 const MotionSessionView = motion.create(SessionView);
 
 // Professional, ergonomic cubic-bezier transition (Apple & Linear design system)
-const VIEW_MOTION_PROPS = {
+const VIEW_MOTION_PROPS: any = {
   variants: {
     visible: {
       opacity: 1,
@@ -19,7 +19,7 @@ const VIEW_MOTION_PROPS = {
       filter: "blur(0px)",
       transition: {
         duration: 0.26,
-        ease: [0.16, 1, 0.3, 1], // easeOutExpo
+        ease: "easeOut",
       },
     },
     hidden: {
@@ -29,7 +29,7 @@ const VIEW_MOTION_PROPS = {
       filter: "blur(2px)",
       transition: {
         duration: 0.18,
-        ease: [0.16, 1, 0.3, 1],
+        ease: "easeOut",
       },
     },
   },
@@ -38,11 +38,15 @@ const VIEW_MOTION_PROPS = {
   exit: "hidden",
 };
 
+import type { BotConfig as BotFlow } from "@/constants/bots";
+
 interface ViewControllerProps {
   appConfig: AppConfig;
+  selectedBot: BotFlow;
+  onSelectBot: (bot: BotFlow) => void;
 }
 
-export function ViewController({ appConfig }: ViewControllerProps) {
+export function ViewController({ appConfig, selectedBot, onSelectBot }: ViewControllerProps) {
   const { isConnected, start } = useSessionContext();
 
   return (
@@ -53,6 +57,8 @@ export function ViewController({ appConfig }: ViewControllerProps) {
           key="welcome"
           {...VIEW_MOTION_PROPS}
           startButtonText={appConfig.startButtonText}
+          selectedBot={selectedBot}
+          onSelectBot={onSelectBot}
           onStartCall={start}
         />
       )}
@@ -62,6 +68,7 @@ export function ViewController({ appConfig }: ViewControllerProps) {
           key="session-view"
           {...VIEW_MOTION_PROPS}
           appConfig={appConfig}
+          selectedBot={selectedBot}
         />
       )}
     </AnimatePresence>
