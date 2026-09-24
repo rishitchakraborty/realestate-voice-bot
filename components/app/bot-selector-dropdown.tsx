@@ -107,14 +107,14 @@ export function BotSelectorDropdown({
             : "h-12 px-4 bg-white hover:bg-slate-50 border border-slate-200 shadow-xs hover:border-slate-300 text-slate-900",
           isConnected &&
             "cursor-not-allowed bg-emerald-50/80 border-emerald-300/80 text-emerald-950 hover:bg-emerald-50 hover:border-emerald-300",
-          isOpen && "ring-2 ring-slate-300 border-slate-400"
+          isOpen && "ring-2 ring-slate-300 border-slate-400",
         )}
       >
         {/* Dynamic Bot Icon */}
         <div
           className={cn(
             "flex h-6 w-6 items-center justify-center rounded-lg text-white shadow-2xs shrink-0 transition-transform duration-200 group-hover:scale-105 bg-gradient-to-br",
-            selectedBot.accentGradient
+            selectedBot.accentGradient,
           )}
         >
           <BotIcon icon={selectedBot.icon} className="h-3.5 w-3.5 text-white" />
@@ -158,7 +158,7 @@ export function BotSelectorDropdown({
             <ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform duration-200 text-slate-500 group-hover:text-slate-700",
-                isOpen && "rotate-180"
+                isOpen && "rotate-180",
               )}
             />
           )}
@@ -214,7 +214,8 @@ export function BotSelectorDropdown({
                     }
                     className={cn(
                       "group relative flex w-full flex-col gap-2 rounded-xl p-3 text-left transition-all duration-200 cursor-pointer border",
-                      !isSelected && "bg-white border-transparent hover:bg-slate-50/90 hover:border-slate-200/80"
+                      !isSelected &&
+                        "bg-white border-transparent hover:bg-slate-50/90 hover:border-slate-200/80",
                     )}
                   >
                     {/* Top Row: Badge, Title, Checkmark */}
@@ -223,10 +224,13 @@ export function BotSelectorDropdown({
                         <div
                           className={cn(
                             "flex h-7 w-7 items-center justify-center rounded-lg text-white shadow-2xs shrink-0 bg-gradient-to-br",
-                            bot.accentGradient
+                            bot.accentGradient,
                           )}
                         >
-                          <BotIcon icon={bot.icon} className="h-3.5 w-3.5 text-white" />
+                          <BotIcon
+                            icon={bot.icon}
+                            className="h-3.5 w-3.5 text-white"
+                          />
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
@@ -292,12 +296,6 @@ export function BotSelectorDropdown({
                   </button>
                 );
               })}
-            </div>
-
-            {/* Footer Notice */}
-            <div className="mt-2.5 pt-2 border-t border-slate-100 px-3 flex items-center justify-between text-[10px] text-slate-500">
-              <span>Dynamic Agent Dispatch</span>
-              <span className="font-semibold text-slate-700">LiveKit Cloud Engine</span>
             </div>
           </motion.div>
         )}
