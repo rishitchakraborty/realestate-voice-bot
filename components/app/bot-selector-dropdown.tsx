@@ -138,9 +138,8 @@ export function BotSelectorDropdown({
             </span>
           </div>
 
-          <span className="text-[9.5px] text-slate-600 font-mono tracking-tight hidden sm:flex items-center gap-1">
-            <span className="text-slate-500 font-sans font-medium">Agent:</span>
-            <span className="text-slate-700 font-semibold">{selectedBot.agentName}</span>
+          <span className="text-[10px] text-slate-500 tracking-tight hidden sm:block truncate max-w-[200px]">
+            {selectedBot.subtitle}
           </span>
         </div>
 
@@ -245,9 +244,6 @@ export function BotSelectorDropdown({
                               {bot.shortName}
                             </span>
                           </div>
-                          <span className="text-[10px] text-slate-500 font-mono">
-                            ID: <span className="font-semibold text-slate-700">{bot.agentName}</span>
-                          </span>
                         </div>
                       </div>
 

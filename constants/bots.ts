@@ -29,19 +29,25 @@ export const BOT_2_AGENT_NAME = "realestate-followup-voice-agent-novesta";
 export const BOTS: BotConfig[] = [
   {
     id: "call-flow-1",
-    name: "Call Flow — Introduction, Interest & WhatsApp Verification",
+    name: "Call Flow 1 — Introduction, Interest & WhatsApp Verification",
     shortName: "Intro & WhatsApp Verification",
     agentName: BOT_1_AGENT_NAME,
     badge: "Intro & WhatsApp",
     subtitle: "Lead Qualification & WhatsApp Verification",
     description:
-      "Engages prospect buyers with Novesta plots & bungalows, discovers buyer interests, answers project questions, and triggers verified WhatsApp brochures.",
+      "Confirms your recent property enquiry, verifies your WhatsApp number, checks interest in Unicorn Aerocity plots vs residential flats, and sends official project details.",
     features: [
-      "Project briefing & plot size discovery",
-      "Legal clearance & RERA clarity",
-      "Instant WhatsApp brochure delivery",
+      "Verifies customer identity & confirms recent property enquiry",
+      "Introduces Unicorn Aerocity project & location details",
+      "Checks property preference (Plotted Development vs Flats)",
+      "Sends legal layout map, approvals & brochure on WhatsApp",
     ],
-    tags: ["Lead Qualification", "WhatsApp Verified", "Brochure Dispatch"],
+    tags: [
+      "Identity Check",
+      "Unicorn Aerocity",
+      "Plots vs Flats",
+      "WhatsApp Brochure",
+    ],
     accentColor: "#c9a24c",
     accentGradient: "from-[#c9a24c] to-[#996515]",
     icon: "phone",
@@ -51,16 +57,17 @@ export const BOTS: BotConfig[] = [
     name: "Call Flow 2 — Site Visit Confirmation",
     shortName: "Site Visit Confirmation",
     agentName: BOT_2_AGENT_NAME,
-    badge: "Site Visit",
-    subtitle: "Site Visit Scheduling & VIP Cab Booking",
+    badge: "Site Visit Followup",
+    subtitle: "Site Visit Scheduling",
     description:
-      "Follows up to schedule and confirm physical on-site tours across Novesta communities with complimentary VIP cab pick-up & drop.",
+      "Follows up on your enquiry, coordinates guided physical walkthroughs across Novesta townships, locks preferred date & time slots, and arranges complimentary VIP cab pick-up & drop.",
     features: [
-      "Dedicated site visit date & time slot booking",
-      "Complimentary VIP cab pick-up & drop coordination",
-      "Instant SMS/WhatsApp calendar confirmation",
+      "Follows up on your property enquiry & brochure review",
+      "Invites you to an exclusive guided on-site township walkthrough",
+      "Locks preferred date & time slot for your family visit",
+      "Confirms project details & site visit location",
     ],
-    tags: ["Site Visit", "VIP Cab Booking", "Slot Confirmation"],
+    tags: ["Site Tour", "Slot Coordination", "Calendar Hold"],
     accentColor: "#0088cc",
     accentGradient: "from-[#0088cc] to-[#0369a1]",
     icon: "calendar",
@@ -80,7 +87,7 @@ export function getBotConfig(idOrAgentName?: string | null): BotConfig {
       b.shortName.toLowerCase() === query ||
       b.name.toLowerCase() === query ||
       (query.includes("1") && b === BOTS[0]) ||
-      (query.includes("2") && b === BOTS[1])
+      (query.includes("2") && b === BOTS[1]),
   );
   return match || DEFAULT_BOT;
 }

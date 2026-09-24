@@ -78,9 +78,6 @@ export const SessionView = ({
               >
                 {selectedBot.badge} • {selectedBot.shortName}
               </span>
-              <span className="text-[9.5px] font-mono text-slate-500 truncate max-w-[200px]" title={selectedBot.agentName}>
-                Agent: <span className="font-semibold text-slate-700">{selectedBot.agentName}</span>
-              </span>
             </div>
 
             {/* Agent Avatar Concentric Circular Ring */}

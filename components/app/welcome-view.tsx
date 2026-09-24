@@ -4,6 +4,7 @@ import React from "react";
 import {
   ArrowRight,
   Award,
+  Bot,
   Building2,
   CalendarCheck,
   CheckCircle2,
@@ -186,12 +187,12 @@ export const WelcomeView = React.forwardRef<
                     </span>
                   </div>
                   <span className="text-[11px] font-normal text-slate-300 flex items-center gap-1.5">
-                    <span className="text-slate-400 font-mono">
-                      Agent: {selectedBot.agentName}
+                    <span className="text-sky-300 font-medium">
+                      Instant Voice Consultation
                     </span>
                     <span className="text-sky-400">•</span>
-                    <span className="text-sky-300 font-medium">
-                      Instant Voice Dispatch
+                    <span className="text-slate-300">
+                      {selectedBot.subtitle}
                     </span>
                   </span>
                 </div>
