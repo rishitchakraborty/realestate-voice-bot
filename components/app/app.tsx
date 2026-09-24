@@ -117,7 +117,6 @@ export function App({ appConfig }: AppProps) {
           </>
         ) : (
           <LiveCallSession
-            key={selectedBot.id}
             appConfig={appConfig}
             selectedBot={selectedBot}
             onSelectBot={handleSelectBot}

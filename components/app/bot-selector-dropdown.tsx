@@ -8,14 +8,18 @@ import {
   CalendarCheck,
   PhoneCall,
   Sparkles,
-  ShieldCheck,
-  Car,
-  MessageSquare,
   Lock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { BOTS as BOT_FLOWS, type BotConfig as BotFlow } from "@/constants/bots";
 import { cn } from "@/lib/shadcn/utils";
+
+function BotIcon({ icon, className }: { icon?: string; className?: string }) {
+  if (icon === "calendar") return <CalendarCheck className={className} />;
+  if (icon === "bot") return <Bot className={className} />;
+  if (icon === "sparkles") return <Sparkles className={className} />;
+  return <PhoneCall className={className} />;
+}
 
 interface BotSelectorDropdownProps {
   selectedBot: BotFlow;
@@ -75,8 +79,6 @@ export function BotSelectorDropdown({
     setIsOpen(false);
   };
 
-  const isFlow1 = selectedBot.flowNumber === "1";
-
   return (
     <div
       ref={containerRef}
@@ -96,46 +98,40 @@ export function BotSelectorDropdown({
         title={
           isConnected
             ? "Voice call in progress with " + selectedBot.shortName
-            : "Select AI Agent Consultation Flow"
+            : "Select AI Agent"
         }
         className={cn(
           "group relative flex items-center gap-2.5 rounded-xl transition-all duration-200 select-none outline-none cursor-pointer",
           variant === "header"
-            ? "h-10 px-3.5 bg-slate-50/90 hover:bg-slate-100/90 border border-slate-200/90 shadow-2xs hover:border-[#c9a24c]/40 text-slate-800"
+            ? "h-10 px-3.5 bg-slate-50/90 hover:bg-slate-100/90 border border-slate-200/90 shadow-2xs text-slate-800"
             : "h-12 px-4 bg-white hover:bg-slate-50 border border-slate-200 shadow-xs hover:border-slate-300 text-slate-900",
           isConnected &&
             "cursor-not-allowed bg-emerald-50/80 border-emerald-300/80 text-emerald-950 hover:bg-emerald-50 hover:border-emerald-300",
-          isOpen && "ring-2 ring-[#c9a24c]/30 border-[#c9a24c]"
+          isOpen && "ring-2 ring-slate-300 border-slate-400"
         )}
       >
-        {/* Flow Indicator Icon */}
+        {/* Dynamic Bot Icon */}
         <div
           className={cn(
-            "flex h-6 w-6 items-center justify-center rounded-lg text-white shadow-2xs shrink-0 transition-transform duration-200 group-hover:scale-105",
-            isFlow1
-              ? "bg-gradient-to-br from-[#c9a24c] to-[#996515]"
-              : "bg-gradient-to-br from-[#0088cc] to-[#0369a1]"
+            "flex h-6 w-6 items-center justify-center rounded-lg text-white shadow-2xs shrink-0 transition-transform duration-200 group-hover:scale-105 bg-gradient-to-br",
+            selectedBot.accentGradient
           )}
         >
-          {isFlow1 ? (
-            <PhoneCall className="h-3.5 w-3.5 text-white" />
-          ) : (
-            <CalendarCheck className="h-3.5 w-3.5 text-white" />
-          )}
+          <BotIcon icon={selectedBot.icon} className="h-3.5 w-3.5 text-white" />
         </div>
 
         {/* Text Container */}
         <div className="flex flex-col items-start text-left">
           <div className="flex items-center gap-1.5">
             <span
-              className={cn(
-                "inline-flex items-center rounded-md px-1.5 py-0.2 text-[9.5px] font-bold uppercase tracking-wider",
-                isFlow1
-                  ? "bg-amber-100/80 text-amber-900 border border-amber-300/60"
-                  : "bg-sky-100/80 text-sky-900 border border-sky-300/60"
-              )}
+              className="inline-flex items-center rounded-md px-1.5 py-0.2 text-[9.5px] font-bold uppercase tracking-wider"
+              style={{
+                backgroundColor: `${selectedBot.accentColor}18`,
+                color: selectedBot.accentColor,
+                border: `1px solid ${selectedBot.accentColor}40`,
+              }}
             >
-              Flow {selectedBot.flowNumber}
+              {selectedBot.badge}
             </span>
             <span className="text-xs font-semibold tracking-tight text-slate-800 truncate max-w-[140px] sm:max-w-[210px] md:max-w-[240px]">
               {selectedBot.shortName}
@@ -163,7 +159,7 @@ export function BotSelectorDropdown({
             <ChevronDown
               className={cn(
                 "h-4 w-4 transition-transform duration-200 text-slate-500 group-hover:text-slate-700",
-                isOpen && "rotate-180 text-[#c9a24c]"
+                isOpen && "rotate-180"
               )}
             />
           )}
@@ -193,7 +189,7 @@ export function BotSelectorDropdown({
               </div>
               <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
                 <Sparkles className="h-3 w-3 text-[#c9a24c]" />
-                2 Flows
+                {BOT_FLOWS.length} Available
               </span>
             </div>
 
@@ -201,7 +197,6 @@ export function BotSelectorDropdown({
             <div className="mt-2 space-y-1.5">
               {BOT_FLOWS.map((bot) => {
                 const isSelected = selectedBot.id === bot.id;
-                const isBot1 = bot.flowNumber === "1";
 
                 return (
                   <button
@@ -210,43 +205,41 @@ export function BotSelectorDropdown({
                     role="option"
                     aria-selected={isSelected}
                     onClick={() => handleSelect(bot)}
+                    style={
+                      isSelected
+                        ? {
+                            borderColor: `${bot.accentColor}80`,
+                            backgroundColor: `${bot.accentColor}0e`,
+                          }
+                        : undefined
+                    }
                     className={cn(
                       "group relative flex w-full flex-col gap-2 rounded-xl p-3 text-left transition-all duration-200 cursor-pointer border",
-                      isSelected
-                        ? isBot1
-                          ? "bg-amber-50/70 border-[#c9a24c]/60 shadow-xs"
-                          : "bg-sky-50/70 border-[#0088cc]/60 shadow-xs"
-                        : "bg-white border-transparent hover:bg-slate-50/90 hover:border-slate-200/80"
+                      !isSelected && "bg-white border-transparent hover:bg-slate-50/90 hover:border-slate-200/80"
                     )}
                   >
-                    {/* Top Row: Flow Badge, Title, Checkmark */}
+                    {/* Top Row: Badge, Title, Checkmark */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <div
                           className={cn(
-                            "flex h-7 w-7 items-center justify-center rounded-lg text-white shadow-2xs shrink-0",
-                            isBot1
-                              ? "bg-gradient-to-br from-[#c9a24c] to-[#996515]"
-                              : "bg-gradient-to-br from-[#0088cc] to-[#0369a1]"
+                            "flex h-7 w-7 items-center justify-center rounded-lg text-white shadow-2xs shrink-0 bg-gradient-to-br",
+                            bot.accentGradient
                           )}
                         >
-                          {isBot1 ? (
-                            <PhoneCall className="h-3.5 w-3.5" />
-                          ) : (
-                            <CalendarCheck className="h-3.5 w-3.5" />
-                          )}
+                          <BotIcon icon={bot.icon} className="h-3.5 w-3.5 text-white" />
                         </div>
                         <div>
                           <div className="flex items-center gap-1.5">
                             <span
-                              className={cn(
-                                "inline-flex items-center rounded-md px-1.5 py-0.2 text-[9.5px] font-bold uppercase tracking-wider",
-                                isBot1
-                                  ? "bg-amber-100 text-amber-900 border border-amber-300"
-                                  : "bg-sky-100 text-sky-900 border border-sky-300"
-                              )}
+                              className="inline-flex items-center rounded-md px-1.5 py-0.2 text-[9.5px] font-bold uppercase tracking-wider"
+                              style={{
+                                backgroundColor: `${bot.accentColor}18`,
+                                color: bot.accentColor,
+                                border: `1px solid ${bot.accentColor}40`,
+                              }}
                             >
-                              Flow {bot.flowNumber}
+                              {bot.badge}
                             </span>
                             <span className="text-xs font-bold text-slate-900 group-hover:text-[#0e1230]">
                               {bot.shortName}
@@ -262,10 +255,8 @@ export function BotSelectorDropdown({
                       <div className="flex items-center pt-0.5">
                         {isSelected ? (
                           <div
-                            className={cn(
-                              "flex h-5 w-5 items-center justify-center rounded-full text-white shadow-xs",
-                              isBot1 ? "bg-[#c9a24c]" : "bg-[#0088cc]"
-                            )}
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-white shadow-xs"
+                            style={{ backgroundColor: bot.accentColor }}
                           >
                             <Check className="h-3 w-3 stroke-[3]" />
                           </div>
@@ -285,14 +276,18 @@ export function BotSelectorDropdown({
                       {bot.tags.map((tag) => (
                         <span
                           key={tag}
-                          className={cn(
-                            "inline-flex items-center rounded-md px-2 py-0.5 text-[9.5px] font-medium",
+                          className="inline-flex items-center rounded-md px-2 py-0.5 text-[9.5px] font-medium"
+                          style={
                             isSelected
-                              ? isBot1
-                                ? "bg-amber-100/90 text-amber-900"
-                                : "bg-sky-100/90 text-sky-900"
-                              : "bg-slate-100 text-slate-600"
-                          )}
+                              ? {
+                                  backgroundColor: `${bot.accentColor}18`,
+                                  color: bot.accentColor,
+                                }
+                              : {
+                                  backgroundColor: "#f1f5f9",
+                                  color: "#475569",
+                                }
+                          }
                         >
                           {tag}
                         </span>
@@ -305,7 +300,7 @@ export function BotSelectorDropdown({
 
             {/* Footer Notice */}
             <div className="mt-2.5 pt-2 border-t border-slate-100 px-3 flex items-center justify-between text-[10px] text-slate-500">
-              <span>Endpoint: Dynamic Agent Dispatch</span>
+              <span>Dynamic Agent Dispatch</span>
               <span className="font-semibold text-slate-700">LiveKit Cloud Engine</span>
             </div>
           </motion.div>

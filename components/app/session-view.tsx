@@ -33,7 +33,6 @@ export const SessionView = ({
   const { audioTrack, state: agentState } = useVoiceAssistant();
   const { isMicrophoneEnabled, localParticipant } = useLocalParticipant();
 
-  const isFlow1 = selectedBot.flowNumber === "1";
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto scroll transcript to bottom
@@ -61,7 +60,7 @@ export const SessionView = ({
         {/* LEFT COLUMN: AGENT SIDE */}
         <div className="flex flex-1 flex-col items-center justify-between rounded-2xl bg-white/80 p-5 shadow-2xs md:w-1/4 backdrop-blur-xs border border-slate-200/80">
           <div className="flex w-full flex-col items-center">
-            {/* Agent Header & Flow Badge */}
+            {/* Agent Header & Badge */}
             <div className="flex flex-col items-center gap-1.5 mb-5 text-center w-full">
               <div className="flex items-center gap-1.5">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-[#0e1230]">
@@ -70,14 +69,14 @@ export const SessionView = ({
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <span
-                className={cn(
-                  "inline-flex items-center rounded-md px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wider",
-                  isFlow1
-                    ? "bg-amber-100 text-amber-900 border border-amber-300/80"
-                    : "bg-sky-100 text-sky-900 border border-sky-300/80"
-                )}
+                className="inline-flex items-center rounded-md px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wider"
+                style={{
+                  backgroundColor: `${selectedBot.accentColor}18`,
+                  color: selectedBot.accentColor,
+                  border: `1px solid ${selectedBot.accentColor}50`,
+                }}
               >
-                Flow {selectedBot.flowNumber} • {selectedBot.shortName}
+                {selectedBot.badge} • {selectedBot.shortName}
               </span>
               <span className="text-[9.5px] font-mono text-slate-500 truncate max-w-[200px]" title={selectedBot.agentName}>
                 Agent: <span className="font-semibold text-slate-700">{selectedBot.agentName}</span>
@@ -86,10 +85,8 @@ export const SessionView = ({
 
             {/* Agent Avatar Concentric Circular Ring */}
             <div
-              className={cn(
-                "relative flex h-36 w-36 items-center justify-center rounded-full border-2 bg-white p-2 shadow-xs transition-colors",
-                isFlow1 ? "border-[#c9a24c]/80" : "border-[#0088cc]/80"
-              )}
+              className="relative flex h-36 w-36 items-center justify-center rounded-full border-2 bg-white p-2 shadow-xs transition-colors"
+              style={{ borderColor: `${selectedBot.accentColor}cc` }}
             >
               <div className="relative flex h-full w-full flex-col items-center justify-center rounded-full border border-slate-200 bg-slate-100/90 text-slate-700 overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -106,10 +103,8 @@ export const SessionView = ({
               {/* Speaking pulse ring */}
               {agentState === "speaking" && (
                 <span
-                  className={cn(
-                    "absolute -inset-1.5 rounded-full border-2 animate-ping opacity-60",
-                    isFlow1 ? "border-[#c9a24c]" : "border-[#0088cc]"
-                  )}
+                  className="absolute -inset-1.5 rounded-full border-2 animate-ping opacity-60"
+                  style={{ borderColor: selectedBot.accentColor }}
                 />
               )}
             </div>
