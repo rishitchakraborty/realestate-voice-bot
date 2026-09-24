@@ -426,7 +426,15 @@ export function CallLogTable({
               </tr>
             ) : (
               paginatedCalls.map((call) => {
-                const dispConfig = DISPOSITION_CONFIGS[call.disposition];
+                const dispConfig = DISPOSITION_CONFIGS[call.disposition] || {
+                  label: call.disposition,
+                  count: 0,
+                  percentage: 0,
+                  color: "#64748b",
+                  bgColor: "bg-slate-50",
+                  textColor: "text-slate-700",
+                  borderColor: "border-slate-200",
+                };
                 const isNonConnected =
                   call.disposition === "Not Reachable" ||
                   call.disposition === "Wrong Number";

@@ -16,6 +16,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useAgentErrors } from "@/hooks/useAgentErrors";
 import { useDebugMode } from "@/hooks/useDebug";
 import { getSandboxTokenSource } from "@/lib/utils";
+import { AlertTriangle } from "lucide-react";
 import {
   DEFAULT_BOT_ID,
   getBotConfig,
@@ -91,6 +92,20 @@ export function App({ appConfig }: AppProps) {
     }
   };
 
+  const handleSelectBotById = (botId: string) => {
+    setSelectedBotId(botId);
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("novesta_selected_bot", botId);
+        const url = new URL(window.location.href);
+        url.searchParams.set("bot", botId);
+        window.history.replaceState(null, "", url.toString());
+      } catch {
+        // Ignore storage or history errors if any
+      }
+    }
+  };
+
   const selectedBot = useMemo(
     () => getBotConfig(selectedBotId),
     [selectedBotId]
@@ -107,12 +122,27 @@ export function App({ appConfig }: AppProps) {
       <div className="flex flex-1 flex-col overflow-hidden">
         {activeTab === "analytics" ? (
           <>
+            {/* Top Yellow Warning Ribbon: Mock Data & UI Notice */}
+            <div className="z-50 flex w-full items-center justify-between border-b border-amber-300 bg-[#fef08a] px-4 py-2 text-xs text-amber-950 shadow-xs sm:px-6">
+              <div className="flex items-center gap-2.5">
+                <AlertTriangle className="h-4 w-4 shrink-0 text-amber-900" />
+                <span className="font-medium text-amber-950">
+                  <strong className="font-bold">Notice:</strong> This is mock data and UI layout for demonstration purposes only.
+                </span>
+              </div>
+              <span className="rounded-md border border-amber-400 bg-amber-200/90 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-amber-950 uppercase shrink-0">
+                Mock Data &amp; UI
+              </span>
+            </div>
             <Header
               title="Novesta Group Call Analytics"
               showBotSelector={false}
             />
             <div className="relative flex flex-1 flex-col overflow-y-auto">
-              <CustomerCallAnalytics />
+              <CustomerCallAnalytics
+                initialFlowId={selectedBotId}
+                onFlowChange={handleSelectBotById}
+              />
             </div>
           </>
         ) : (

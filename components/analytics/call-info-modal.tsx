@@ -12,6 +12,9 @@ import {
   FileText,
   Activity,
   Layers,
+  Calendar,
+  Car,
+  MessageSquareShare,
 } from "lucide-react";
 import {
   CallRecord,
@@ -27,20 +30,57 @@ interface CallInfoModalProps {
 export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
   if (!isOpen || !call) return null;
 
-  const dispConfig = DISPOSITION_CONFIGS[call.disposition];
+  const dispConfig = DISPOSITION_CONFIGS[call.disposition] || {
+    label: call.disposition,
+    count: 0,
+    percentage: 0,
+    color: "#2563eb",
+    bgColor: "bg-blue-50",
+    textColor: "text-blue-700",
+    borderColor: "border-blue-200",
+  };
 
-  // State machine steps simulation
-  const steps = [
-    { code: "S0", name: "Greeting & Brand Introduction", passed: true },
-    { code: "S1", name: "Interest Discovery & Purpose", passed: call.purpose !== "—" },
-    { code: "S2", name: "Project Highlights & Amenities", passed: call.preferredLocation !== "—" },
-    { code: "S3", name: "Configuration & Budget Qualification", passed: call.configuration !== "—" },
-    {
-      code: "S9",
-      name: "Site Visit Scheduling",
-      passed: call.disposition === "Site Visit Booked",
-    },
-  ];
+  const isFlow2 =
+    call.flowId === "call-flow-2" ||
+    Boolean(call.visitSlot) ||
+    call.disposition.includes("Site Visit") ||
+    call.disposition.includes("Slot");
+
+  // Dynamic state machine steps based on conversational flow
+  const steps = isFlow2
+    ? [
+        { code: "S0", name: "Warm Reconnection & Identity Confirmation", passed: true },
+        { code: "S1", name: "WhatsApp Brochure Review Check", passed: call.disposition !== "Brochure Not Reviewed" },
+        { code: "S2", name: "Guided Walkthrough Invitation with Senior Architect", passed: call.disposition !== "Visit Declined" && call.disposition !== "Not Reachable" },
+        {
+          code: "S3",
+          name: "Weekend / Weekday Slot Locking",
+          passed:
+            call.disposition === "Site Visit Confirmed" ||
+            call.disposition === "Weekend Slot Locked" ||
+            call.disposition === "Weekday Slot Locked" ||
+            call.disposition === "VIP Cab Confirmed",
+        },
+        {
+          code: "S4",
+          name: "Complimentary Doorstep VIP Cab Pick-up Logistics",
+          passed: call.disposition === "VIP Cab Confirmed" || Boolean(call.vipCabAddress),
+        },
+      ]
+    : [
+        { code: "S0", name: "Humanized Opening (Sub-5s Pacing Rule)", passed: true },
+        { code: "S1", name: "Introduction & Novesta Enquiry Briefing", passed: call.purpose !== "—" },
+        { code: "S2", name: "Property Preference Qualification (Plots vs Flats)", passed: call.configuration !== "—" },
+        {
+          code: "S3",
+          name: "WhatsApp Verification & Legal Layout Dispatch",
+          passed:
+            call.disposition === "WhatsApp Brochure Sent" ||
+            call.disposition === "Plot Interest Captured" ||
+            call.disposition === "Flat Interest Captured" ||
+            call.whatsAppStatus === "Delivered",
+        },
+      ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 animate-in fade-in duration-200">
@@ -48,8 +88,8 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-100 pb-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-              <Phone className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-xs">
+              {isFlow2 ? <Calendar className="h-5 w-5 text-sky-400" /> : <Phone className="h-5 w-5 text-amber-400" />}
             </div>
             <div>
               <div className="flex items-center gap-2">
@@ -129,10 +169,49 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
             </div>
           </div>
 
-          {/* LeadProfile Extracted Intent */}
+          {/* Flow Specific Special Data Box */}
+          {isFlow2 && (call.visitSlot || call.vipCabAddress) && (
+            <div className="rounded-xl border border-sky-200 bg-sky-50/50 p-4">
+              <h4 className="font-semibold text-sky-950 flex items-center gap-1.5 mb-2.5">
+                <Calendar className="h-4 w-4 text-sky-600" />
+                <span>Confirmed Site Walkthrough Logistics</span>
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-slate-700">
+                {call.visitSlot && (
+                  <div>
+                    <span className="text-slate-500 block text-[10px] uppercase">Reserved Slot</span>
+                    <span className="font-semibold text-slate-900">{call.visitSlot}</span>
+                  </div>
+                )}
+                {call.vipCabAddress && (
+                  <div>
+                    <span className="text-slate-500 block text-[10px] uppercase flex items-center gap-1">
+                      <Car className="h-3 w-3 text-emerald-600" /> VIP Cab Pick-up Address
+                    </span>
+                    <span className="font-semibold text-slate-900">{call.vipCabAddress}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {!isFlow2 && call.whatsAppStatus && (
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4">
+              <h4 className="font-semibold text-emerald-950 flex items-center gap-1.5 mb-1.5">
+                <MessageSquareShare className="h-4 w-4 text-emerald-600" />
+                <span>WhatsApp Brochure Payload</span>
+              </h4>
+              <p className="text-xs text-slate-700">
+                Official Unicorn Aerocity legal layout plan, master blueprint &amp; RERA approvals status:{" "}
+                <span className="font-semibold text-emerald-800 uppercase">{call.whatsAppStatus}</span>
+              </p>
+            </div>
+          )}
+
+          {/* Extracted Attributes */}
           <div className="rounded-xl border border-slate-200/80 p-4">
             <h4 className="font-semibold text-slate-900 flex items-center gap-1.5 mb-3">
-              <Layers className="h-4 w-4 text-blue-600" />
+              <Layers className="h-4 w-4 text-slate-700" />
               <span>Extracted LeadProfile Attributes</span>
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-700">
@@ -148,7 +227,7 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
                 </span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px] uppercase">BHK Type</span>
+                <span className="text-slate-400 block text-[10px] uppercase">Property Type</span>
                 <span className="font-medium text-slate-900 flex items-center gap-1">
                   <Home className="h-3 w-3 text-slate-400" />
                   {call.configuration}
@@ -167,7 +246,7 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
           {/* State Machine Trace */}
           <div className="rounded-xl border border-slate-200/80 p-4">
             <h4 className="font-semibold text-slate-900 flex items-center gap-1.5 mb-3">
-              <CheckCircle2 className="h-4 w-4 text-blue-600" />
+              <CheckCircle2 className="h-4 w-4 text-slate-800" />
               <span>Deterministic Script State Machine Trace</span>
             </h4>
             <div className="space-y-2">
@@ -181,52 +260,39 @@ export function CallInfoModal({ call, isOpen, onClose }: CallInfoModalProps) {
                   }`}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="font-mono font-bold">{st.code}</span>
+                    <span className="font-mono font-bold text-[10px] px-1.5 py-0.5 rounded bg-white/80 border border-slate-200">
+                      {st.code}
+                    </span>
                     <span>{st.name}</span>
                   </div>
                   <span className="text-[10px] font-semibold uppercase">
-                    {st.passed ? "Reached" : "Skipped / Dropped"}
+                    {st.passed ? "Passed" : "Skipped"}
                   </span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Mock Transcript Preview */}
-          <div className="rounded-xl border border-slate-200/80 p-4 bg-slate-50/50">
-            <h4 className="font-semibold text-slate-900 flex items-center gap-1.5 mb-2">
-              <FileText className="h-4 w-4 text-slate-600" />
-              <span>Session Transcript Preview</span>
-            </h4>
-            {call.duration === "00:00" ? (
-              <p className="text-slate-400 italic">
-                No conversation captured. Call ended at telephony / SIP gateway layer.
+          {/* Notes if present */}
+          {call.notes && (
+            <div className="rounded-xl border border-slate-200/80 p-4">
+              <h4 className="font-semibold text-slate-900 flex items-center gap-1.5 mb-2">
+                <FileText className="h-4 w-4 text-slate-500" />
+                <span>Call Summary &amp; Relationship Manager Notes</span>
+              </h4>
+              <p className="text-xs text-slate-600 leading-relaxed font-sans">
+                {call.notes}
               </p>
-            ) : (
-              <div className="space-y-2 font-mono text-[11px] text-slate-700">
-                <p>
-                  <span className="font-bold text-blue-600">AI:</span> Hello, am I speaking
-                  with {call.customerName}? Calling from Novesta Group regarding your enquiry.
-                </p>
-                <p>
-                  <span className="font-bold text-emerald-600">Customer:</span> Yes, I was
-                  looking at properties in {call.preferredLocation !== "—" ? call.preferredLocation : "Kolkata"}.
-                </p>
-                <p>
-                  <span className="font-bold text-blue-600">AI:</span> Wonderful! We have
-                  exclusive premium residential plots and bungalows fitting your requirement.
-                </p>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end border-t border-slate-100 pt-3">
+        <div className="border-t border-slate-100 pt-3 flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 cursor-pointer"
+            className="rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 cursor-pointer"
           >
             Close
           </button>

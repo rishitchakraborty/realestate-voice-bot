@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import {
-  DISPOSITION_CONFIGS,
-  ORDERED_DISPOSITIONS,
+  DISPOSITION_CONFIGS as DEFAULT_CONFIGS,
+  ORDERED_DISPOSITIONS as DEFAULT_ORDER,
+  DispositionConfig,
   DispositionType,
 } from "./call-analytics-data";
 
@@ -11,26 +12,38 @@ interface DonutChartProps {
   selectedDisposition?: DispositionType | null;
   onSelectDisposition?: (disposition: DispositionType | null) => void;
   workflowName?: string;
+  flowTitle?: string;
+  totalCalls?: number;
+  dispositionConfigs?: Record<string, DispositionConfig>;
+  orderedDispositions?: DispositionType[];
 }
 
 export function DonutChart({
   selectedDisposition,
   onSelectDisposition,
-  workflowName = "New Kolkata (ALC-NKOL)",
+  workflowName,
+  flowTitle,
+  totalCalls = 148,
+  dispositionConfigs = DEFAULT_CONFIGS,
+  orderedDispositions = DEFAULT_ORDER,
 }: DonutChartProps) {
   const [hoveredDisposition, setHoveredDisposition] =
     useState<DispositionType | null>(null);
 
-  const totalCalls = 120;
   const radius = 70;
   const strokeWidth = 24;
   const circumference = 2 * Math.PI * radius;
 
+  // Filter orderedDispositions to only those present in dispositionConfigs
+  const activeDispositions = orderedDispositions.filter(
+    (type) => dispositionConfigs[type] !== undefined,
+  );
+
   // Compute stroke dasharray and offset for each segment
   let accumulatedPercent = 0;
-  const segments = ORDERED_DISPOSITIONS.map((type) => {
-    const config = DISPOSITION_CONFIGS[type];
-    const segmentLength = (config.count / totalCalls) * circumference;
+  const segments = activeDispositions.map((type) => {
+    const config = dispositionConfigs[type];
+    const segmentLength = (config.count / (totalCalls || 1)) * circumference;
     const strokeDasharray = `${segmentLength} ${circumference - segmentLength}`;
     const strokeDashoffset = -(accumulatedPercent / 100) * circumference;
     accumulatedPercent += config.percentage;
@@ -44,9 +57,9 @@ export function DonutChart({
   });
 
   const activeItem = hoveredDisposition
-    ? DISPOSITION_CONFIGS[hoveredDisposition]
+    ? dispositionConfigs[hoveredDisposition]
     : selectedDisposition
-      ? DISPOSITION_CONFIGS[selectedDisposition]
+      ? dispositionConfigs[selectedDisposition]
       : null;
 
   return (
@@ -55,11 +68,16 @@ export function DonutChart({
         {/* Header / Date range */}
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
-            AUG 1 – AUG 14, 2026
+            PAST 30 DAYS DISPOSITION ANALYSIS
           </span>
+          {workflowName && (
+            <span className="text-[10.5px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+              {workflowName}
+            </span>
+          )}
         </div>
         <h3 className="mt-1 text-base font-bold tracking-tight text-slate-900">
-          Total calls — {workflowName}
+          {flowTitle || "Call Dispositions & Outcomes"}
         </h3>
 
         {/* Chart & Legend container */}
@@ -91,7 +109,9 @@ export function DonutChart({
                     r={radius}
                     className="fill-none cursor-pointer transition-all duration-200 hover:opacity-90"
                     stroke={segment.config.color}
-                    strokeWidth={isHovered || isSelected ? strokeWidth + 4 : strokeWidth}
+                    strokeWidth={
+                      isHovered || isSelected ? strokeWidth + 4 : strokeWidth
+                    }
                     strokeDasharray={segment.strokeDasharray}
                     strokeDashoffset={segment.strokeDashoffset}
                     strokeLinecap="butt"
@@ -100,7 +120,9 @@ export function DonutChart({
                     onClick={() => {
                       if (onSelectDisposition) {
                         onSelectDisposition(
-                          selectedDisposition === segment.type ? null : segment.type,
+                          selectedDisposition === segment.type
+                            ? null
+                            : segment.type,
                         );
                       }
                     }}
@@ -110,11 +132,11 @@ export function DonutChart({
             </svg>
 
             {/* Center Callout */}
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-              <span className="text-3xl font-extrabold tracking-tight text-slate-900">
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center px-2">
+              <span className="text-3xl font-extrabold tracking-tight text-slate-900 tabular-nums">
                 {activeItem ? activeItem.count : totalCalls}
               </span>
-              <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase">
+              <span className="text-[9.5px] font-bold tracking-wider text-slate-400 uppercase truncate max-w-[120px]">
                 {activeItem ? activeItem.label : "TOTAL CALLS"}
               </span>
               {activeItem && (
@@ -127,8 +149,9 @@ export function DonutChart({
 
           {/* Legend List */}
           <div className="flex flex-1 flex-col space-y-1 w-full min-w-0 sm:pl-2">
-            {ORDERED_DISPOSITIONS.map((type) => {
-              const item = DISPOSITION_CONFIGS[type];
+            {activeDispositions.map((type) => {
+              const item = dispositionConfigs[type];
+              if (!item) return null;
               const isHovered = hoveredDisposition === type;
               const isSelected = selectedDisposition === type;
 
@@ -156,7 +179,7 @@ export function DonutChart({
                       className="h-2.5 w-2.5 shrink-0 rounded-xs"
                       style={{ backgroundColor: item.color }}
                     />
-                    <span className="text-slate-700 text-xs font-medium whitespace-nowrap">
+                    <span className="text-slate-700 text-xs font-medium truncate">
                       {item.label}
                     </span>
                   </div>
@@ -177,8 +200,7 @@ export function DonutChart({
 
       {/* Footer hint */}
       <p className="mt-5 border-t border-slate-100 pt-3 text-[11px] leading-relaxed text-slate-400">
-        Hover a ring segment for its exact count. Every value here is also a filterable
-        column in the call log below.
+        Hover a ring segment for its exact count. Every disposition is filterable in the call log table below.
       </p>
     </div>
   );
